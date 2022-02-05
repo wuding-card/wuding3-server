@@ -9,23 +9,32 @@ export enum PlayerOperation {
 }
 
 export enum GameStage {
-  INIT,
   PREPARE,
   ACTION,
   END,
-  AWIN,
-  BWIN,
-  DRAW,
+}
+
+export enum GameStep {
+  GAME_START,
+  UNTAP,
+  TURN_START,
+  PRACTICE,
+  ACTION_START,
+  FREE_ACTION,
+  ACTION_END,
+  TURN_END,
+  DISCARD,
+  GAME_END,
 }
 
 export interface GameState {
   playerState: Player[],
   automatonState: {
     stage: GameStage,
+    step: GameStep,
     /* 0: Alice, 1: Bob */
     priority: number,
     turn: number,
     round: number,
-    operation: PlayerOperation,
   }
 }

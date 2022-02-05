@@ -11,6 +11,7 @@
 轮: round
   两名玩家各执一回合后完成一轮。
 
+游戏开始步骤: gameStart step
 准备阶段: prepare stage
   重置步骤: untap step (C)
   回合开始步骤: turnStart step
@@ -22,6 +23,7 @@
 结束阶段
   结束步骤: turnEnd step
   弃牌步骤: discard step
+游戏结束步骤: gameEnd step
 
 #### 游戏内容
 
