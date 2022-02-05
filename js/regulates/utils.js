@@ -1,6 +1,12 @@
-import cardJSON from '../assets/lib/cards.json';
-const cardLib = cardJSON;
-export const SectID = {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LevelID = exports.TypeID = exports.SectID = exports.cardLib = void 0;
+const cards_json_1 = __importDefault(require("../assets/lib/cards.json"));
+exports.cardLib = cards_json_1.default;
+exports.SectID = {
     "通用": 0,
     "奔雷": 1,
     "焚金": 2,
@@ -11,7 +17,7 @@ export const SectID = {
     "万法": 7,
     "元力": 8,
 };
-export const TypeID = {
+exports.TypeID = {
     "万物": 0,
     "即时": 1,
     "触发": 2,
@@ -21,7 +27,7 @@ export const TypeID = {
     "防御": 6,
     "法器": 7,
 };
-export const LevelID = {
+exports.LevelID = {
     "凡人": 0,
     "炼气": 1,
     "筑基": 2,
@@ -31,23 +37,3 @@ export const LevelID = {
     "涅槃": 6,
     "逍遥": 7,
 };
-export function cardInit(name) {
-    const card = cardLib[name];
-    let ret = {
-        name: name,
-        counter: {},
-        attribute: {},
-        tapped: false,
-        faceup: true,
-        sectID: SectID[card["sect"]],
-        typeID: TypeID[card["type"]],
-        level: LevelID[card["level"]],
-        rarity: card["rarity"],
-    };
-    for (const i of ["power", "defense", 'durability', 'castCost', 'maintainCost']) {
-        if (card[i] != "") {
-            ret.attribute[i] = card[i];
-        }
-    }
-    return ret;
-}

@@ -1,8 +1,6 @@
-import { CardState } from "./interfaces";
-
 import cardJSON from '../assets/lib/cards.json';
 
-const cardLib: Record<string,any> = cardJSON;
+export const cardLib: Record<string,any> = cardJSON;
 
 export const SectID: Record<string,number> = {
   "通用": 0,
@@ -36,25 +34,4 @@ export const LevelID: Record<string,number> = {
   "炼虚": 5,
   "涅槃": 6,
   "逍遥": 7,
-}
-
-export function cardInit(name: string) : CardState {
-  const card = cardLib[name];
-  let ret: CardState = {
-    name: name,
-    counter: {},
-    attribute: {},
-    tapped: false,
-    faceup: true,
-    sectID: SectID[card["sect"]],
-    typeID: TypeID[card["type"]],
-    level: LevelID[card["level"]],
-    rarity: card["rarity"],
-  }
-  for(const i of ["power","defense",'durability','castCost','maintainCost']){
-    if(card[i] != ""){
-      ret.attribute[i]=card[i];
-    }
-  }
-  return ret;
 }

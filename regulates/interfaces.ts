@@ -1,14 +1,4 @@
-export interface CardState {
-  name: string,
-  counter: Record<string,number>,
-  tapped: boolean,
-  faceup: boolean,
-  attribute: Record<string, number>,
-  sectID: number,
-  level: number,
-  typeID: number,
-  rarity: number,
-}
+import { Card } from "../engine/Card"
 
 export interface PlayerState {
   basicState: {
@@ -17,14 +7,14 @@ export interface PlayerState {
     level: number,
   },
   groundState: {
-    sorceryState: CardState[],
-    equipmentState: CardState[],
-    zisurruState: CardState[],
-    libraryState: CardState[],
-    graveyardState: CardState[],
-    blackholeState: CardState[],
+    sorceryState: Card[],
+    equipmentState: Card[],
+    zisurruState: Card[],
+    libraryState: Card[],
+    graveyardState: Card[],
+    blackholeState: Card[],
   },
-  handState: CardState[],
+  handState: Card[],
   actionState: {
     drawPerPractice: number,
   }

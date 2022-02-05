@@ -1,67 +1,21 @@
-import { GameStage, PlayerOperation } from "../regulates/interfaces.js";
-import { cardInit } from "../regulates/utils.js";
-export class GameAutomaton {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameAutomaton = void 0;
+const interfaces_js_1 = require("../regulates/interfaces.js");
+const Player_js_1 = require("./Player.js");
+class GameAutomaton {
     constructor(deck) {
         this.gameState = {
-            playerState: [
-                // Alice
-                {
-                    basicState: {
-                        health: 10,
-                        mana: 0,
-                        level: 0,
-                    },
-                    groundState: {
-                        sorceryState: [],
-                        equipmentState: [],
-                        zisurruState: [],
-                        libraryState: [],
-                        graveyardState: [],
-                        blackholeState: [],
-                    },
-                    handState: [],
-                    actionState: {
-                        drawPerPractice: 2,
-                    }
-                },
-                // Bob
-                {
-                    basicState: {
-                        health: 10,
-                        mana: 1,
-                        level: 1,
-                    },
-                    groundState: {
-                        sorceryState: [],
-                        equipmentState: [],
-                        zisurruState: [],
-                        libraryState: [],
-                        graveyardState: [],
-                        blackholeState: [],
-                    },
-                    handState: [],
-                    actionState: {
-                        drawPerPractice: 2,
-                    }
-                }
-            ],
+            playerState: [new Player_js_1.Player(0, deck[0]), new Player_js_1.Player(1, deck[1])],
             automatonState: {
-                stage: GameStage.INIT,
+                stage: interfaces_js_1.GameStage.INIT,
                 /* true: Alice, false: Bob */
                 priority: 0,
-                operation: PlayerOperation.PRACTICE,
+                operation: interfaces_js_1.PlayerOperation.PRACTICE,
             }
         };
-        for (const i in deck) {
-            for (const j in deck[i]) {
-                this.gameState.playerState[i].handState.push(cardInit(deck[i][j]));
-            }
-            this.shuffleLibrary(1);
-        }
-    }
-    shuffleLibrary(x) {
-        this.gameState.playerState[x].handState.sort((a, b) => (Math.random() - 0.5));
     }
     practice(choice) {
     }
 }
+exports.GameAutomaton = GameAutomaton;

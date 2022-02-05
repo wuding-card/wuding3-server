@@ -1,9 +1,12 @@
-export var PlayerOperation;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameStage = exports.PlayerOperation = void 0;
+var PlayerOperation;
 (function (PlayerOperation) {
     PlayerOperation[PlayerOperation["PRACTICE"] = 0] = "PRACTICE";
     PlayerOperation[PlayerOperation["ACTION"] = 1] = "ACTION";
-})(PlayerOperation || (PlayerOperation = {}));
-export var GameStage;
+})(PlayerOperation = exports.PlayerOperation || (exports.PlayerOperation = {}));
+var GameStage;
 (function (GameStage) {
     GameStage[GameStage["INIT"] = 0] = "INIT";
     GameStage[GameStage["ALICE_PREPARE"] = 1] = "ALICE_PREPARE";
@@ -15,4 +18,4 @@ export var GameStage;
     GameStage[GameStage["ALICE_WIN"] = 7] = "ALICE_WIN";
     GameStage[GameStage["BOB_WIN"] = 8] = "BOB_WIN";
     GameStage[GameStage["DRAW"] = 9] = "DRAW";
-})(GameStage || (GameStage = {}));
+})(GameStage = exports.GameStage || (exports.GameStage = {}));
