@@ -1,0 +1,28 @@
+{
+  "name": "wuding3-server",
+  "version": "1.0.0",
+  "description": "Third Gen of WudingCard; Server.",
+  "main": "App.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wuding-card/wuding3-server.git"
+  },
+  "author": "Smokey_Days",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wuding-card/wuding3-server/issues"
+  },
+  "homepage": "https://github.com/wuding-card/wuding3-server#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "socket.io": "^4.4.1",
+    "ts-node": "^10.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13"
+  }
+}
