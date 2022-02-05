@@ -1,15 +1,19 @@
 import { Card } from "../engine/Card"
 import { Player } from "../engine/Player"
 
+// Todo: Add DEFENSE.
 export enum PlayerOperation {
   NONE,
   PRACTICE,
   INSTANT_ACTION,
   FREE_ACTION,
+  ATTACK,
+  DISCARD,
 }
 
 export enum GameStage {
   PREPARE,
+  BATTLE,
   ACTION,
   END,
 }
@@ -19,9 +23,10 @@ export enum GameStep {
   UNTAP,
   TURN_START,
   PRACTICE,
+  BATTLE_START,
+  ATTACK,
   ACTION_START,
   FREE_ACTION,
-  ACTION_END,
   TURN_END,
   DISCARD,
   GAME_END,
@@ -33,9 +38,16 @@ export enum GameResult {
   DRAW,
 }
 
+/* 
+DEFAULT_ERROR: An error that won't happen, or can't be expected.
+ILLEGAL_OPERATION: An operation with illegal type.
+FUTURE_FEATURE: This error happens because it used a feature that hasn't been deployed completely.
+*/
+
 export enum ErrorSignal {
   DEAFULT_ERROR,
   ILLEGAL_OPERATION,
+  FUTURE_FEATURE,
 }
 
 export enum InstantOperation {
@@ -49,7 +61,7 @@ export enum FreeOperation {
 export enum IterateSignalType {
   REQUEST,
   ERROR,
-  GAMEEND,
+  GAME_END,
 }
 export interface IterateSignal {
   type: IterateSignalType,
@@ -64,9 +76,10 @@ export interface InstantActionState {
   type: InstantOperation,
   state: null,
 }
+export type DiscardState = number[];
 export interface PlayerSignal {
   type: PlayerOperation,
-  state: null | PracticeState | FreeActionState | InstantActionState;
+  state: null | PracticeState | FreeActionState | InstantActionState | DiscardState;
 }
 
 export interface GameState {
@@ -79,4 +92,5 @@ export interface GameState {
     turn: number,
     round: number,
   }
+  stack: Card[],
 }

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
+const utils_1 = require("../regulates/utils");
 const Card_1 = require("./Card");
 class Player {
     constructor(id, deck) {
@@ -56,7 +57,7 @@ class Player {
         choice == 0 ? this.draw(this.actionState.drawPerPractice) : this.levelChange();
     }
     /* true means live while false means dead */
-    stateCheck() {
+    alive() {
         return this.basicState.health >= 0;
     }
     manaRestore() {
@@ -73,6 +74,15 @@ class Player {
             i.turnTap(false);
         }
         this.manaRestore();
+    }
+    discard(state) {
+        state.sort();
+        for (let i = state.length - 1; i >= 0; --i) {
+            const card = this.handState.splice(state[i], 1);
+            (0, utils_1.assert)(card.length == 1);
+            card[0].turnFace(true);
+            this.groundState.graveyardState.push(card[0]);
+        }
     }
 }
 exports.Player = Player;

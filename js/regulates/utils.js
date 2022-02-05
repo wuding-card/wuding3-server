@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LevelID = exports.TypeID = exports.SectID = exports.cardLib = void 0;
+exports.assert = exports.LevelID = exports.TypeID = exports.SectID = exports.cardLib = void 0;
 const cards_json_1 = __importDefault(require("../assets/lib/cards.json"));
 exports.cardLib = cards_json_1.default;
 exports.SectID = {
@@ -37,3 +37,9 @@ exports.LevelID = {
     "涅槃": 6,
     "逍遥": 7,
 };
+function assert(condition) {
+    if (!condition) {
+        throw new Error("VITAL_ERROR: Unmatched Assertion");
+    }
+}
+exports.assert = assert;

@@ -35,3 +35,9 @@ export const LevelID: Record<string,number> = {
   "涅槃": 6,
   "逍遥": 7,
 }
+
+export function assert(condition: boolean) {
+  if(!condition){
+    throw new Error("VITAL_ERROR: Unmatched Assertion");
+  }
+}

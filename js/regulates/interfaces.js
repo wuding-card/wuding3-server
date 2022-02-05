@@ -1,18 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IterateSignalType = exports.FreeOperation = exports.InstantOperation = exports.ErrorSignal = exports.GameResult = exports.GameStep = exports.GameStage = exports.PlayerOperation = void 0;
+// Todo: Add DEFENSE.
 var PlayerOperation;
 (function (PlayerOperation) {
     PlayerOperation[PlayerOperation["NONE"] = 0] = "NONE";
     PlayerOperation[PlayerOperation["PRACTICE"] = 1] = "PRACTICE";
     PlayerOperation[PlayerOperation["INSTANT_ACTION"] = 2] = "INSTANT_ACTION";
     PlayerOperation[PlayerOperation["FREE_ACTION"] = 3] = "FREE_ACTION";
+    PlayerOperation[PlayerOperation["ATTACK"] = 4] = "ATTACK";
+    PlayerOperation[PlayerOperation["DISCARD"] = 5] = "DISCARD";
 })(PlayerOperation = exports.PlayerOperation || (exports.PlayerOperation = {}));
 var GameStage;
 (function (GameStage) {
     GameStage[GameStage["PREPARE"] = 0] = "PREPARE";
-    GameStage[GameStage["ACTION"] = 1] = "ACTION";
-    GameStage[GameStage["END"] = 2] = "END";
+    GameStage[GameStage["BATTLE"] = 1] = "BATTLE";
+    GameStage[GameStage["ACTION"] = 2] = "ACTION";
+    GameStage[GameStage["END"] = 3] = "END";
 })(GameStage = exports.GameStage || (exports.GameStage = {}));
 var GameStep;
 (function (GameStep) {
@@ -20,12 +24,13 @@ var GameStep;
     GameStep[GameStep["UNTAP"] = 1] = "UNTAP";
     GameStep[GameStep["TURN_START"] = 2] = "TURN_START";
     GameStep[GameStep["PRACTICE"] = 3] = "PRACTICE";
-    GameStep[GameStep["ACTION_START"] = 4] = "ACTION_START";
-    GameStep[GameStep["FREE_ACTION"] = 5] = "FREE_ACTION";
-    GameStep[GameStep["ACTION_END"] = 6] = "ACTION_END";
-    GameStep[GameStep["TURN_END"] = 7] = "TURN_END";
-    GameStep[GameStep["DISCARD"] = 8] = "DISCARD";
-    GameStep[GameStep["GAME_END"] = 9] = "GAME_END";
+    GameStep[GameStep["BATTLE_START"] = 4] = "BATTLE_START";
+    GameStep[GameStep["ATTACK"] = 5] = "ATTACK";
+    GameStep[GameStep["ACTION_START"] = 6] = "ACTION_START";
+    GameStep[GameStep["FREE_ACTION"] = 7] = "FREE_ACTION";
+    GameStep[GameStep["TURN_END"] = 8] = "TURN_END";
+    GameStep[GameStep["DISCARD"] = 9] = "DISCARD";
+    GameStep[GameStep["GAME_END"] = 10] = "GAME_END";
 })(GameStep = exports.GameStep || (exports.GameStep = {}));
 var GameResult;
 (function (GameResult) {
@@ -33,10 +38,16 @@ var GameResult;
     GameResult[GameResult["BWIN"] = 1] = "BWIN";
     GameResult[GameResult["DRAW"] = 2] = "DRAW";
 })(GameResult = exports.GameResult || (exports.GameResult = {}));
+/*
+DEFAULT_ERROR: An error that won't happen, or can't be expected.
+ILLEGAL_OPERATION: An operation with illegal type.
+FUTURE_FEATURE: This error happens because it used a feature that hasn't been deployed completely.
+*/
 var ErrorSignal;
 (function (ErrorSignal) {
     ErrorSignal[ErrorSignal["DEAFULT_ERROR"] = 0] = "DEAFULT_ERROR";
     ErrorSignal[ErrorSignal["ILLEGAL_OPERATION"] = 1] = "ILLEGAL_OPERATION";
+    ErrorSignal[ErrorSignal["FUTURE_FEATURE"] = 2] = "FUTURE_FEATURE";
 })(ErrorSignal = exports.ErrorSignal || (exports.ErrorSignal = {}));
 var InstantOperation;
 (function (InstantOperation) {
@@ -52,5 +63,5 @@ var IterateSignalType;
 (function (IterateSignalType) {
     IterateSignalType[IterateSignalType["REQUEST"] = 0] = "REQUEST";
     IterateSignalType[IterateSignalType["ERROR"] = 1] = "ERROR";
-    IterateSignalType[IterateSignalType["GAMEEND"] = 2] = "GAMEEND";
+    IterateSignalType[IterateSignalType["GAME_END"] = 2] = "GAME_END";
 })(IterateSignalType = exports.IterateSignalType || (exports.IterateSignalType = {}));

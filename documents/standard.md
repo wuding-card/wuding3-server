@@ -11,13 +11,13 @@
 轮: round
   两名玩家各执一回合后完成一轮。
 
-游戏开始步骤: gameStart step
+游戏开始步骤: gameStart step (C)
 准备阶段: prepare stage
   重置步骤: untap step (C)
   回合开始步骤: turnStart step (I)
   修炼步骤: practice step (P)
 战斗阶段: battle stage
-  战斗开始步骤: battle step (I)
+  战斗开始步骤: battleStart step (I)
   攻击步骤: attack step (A)
 行动阶段: action stage
   行动开始步骤: actionStart step (I)

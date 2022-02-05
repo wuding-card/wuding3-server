@@ -1,4 +1,6 @@
+import { DiscardState } from "../regulates/interfaces";
 import { Deck } from "../regulates/types";
+import { assert } from "../regulates/utils";
 import { Card } from "./Card"
 
 export class Player {
@@ -81,7 +83,7 @@ export class Player {
   }
 
   /* true means live while false means dead */
-  stateCheck() {
+  alive() {
     return this.basicState.health >= 0;
   }
 
@@ -100,5 +102,15 @@ export class Player {
       i.turnTap(false);
     }
     this.manaRestore();
+  }
+
+  discard(state: DiscardState) {
+    state.sort();
+    for(let i = state.length - 1; i >= 0; --i) {
+      const card = this.handState.splice(state[i],1);
+      assert(card.length == 1);
+      card[0].turnFace(true);
+      this.groundState.graveyardState.push(card[0]);
+    }
   }
 }
