@@ -71,4 +71,17 @@ export class Player {
       }
     }
   }
+
+  levelChange(times: number = 1) {
+    this.basicState.level += times;
+  }
+
+  /* true means live while false means dead */
+  stateCheck() {
+    return this.basicState.health >= 0;
+  }
+
+  practice(choice: number) {
+    choice == 0? this.draw(this.actionState.drawPerPractice): this.levelChange();
+  }
 }

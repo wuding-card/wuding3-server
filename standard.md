@@ -1,5 +1,30 @@
-### 无定牌标准译名表
+### 无定牌标准译名表及其约定
 **和 client 中的取并集**
+#### 游戏进程
+
+回合: turn
+  一名玩家占据主动的一段时间。
+阶段: stage
+  分割回合的单位。
+步骤: step
+  分割阶段的单位。
+轮: round
+  两名玩家各执一回合后完成一轮。
+
+准备阶段: prepare stage
+  重置步骤: untap step (C)
+  回合开始步骤: turnStart step
+  修炼步骤: practice step
+行动阶段: action stage
+  行动开始步骤: actionStart step
+  自由行动步骤: freeAction step
+  行动结束步骤: actionEnd step
+结束阶段
+  结束步骤: turnEnd step
+  弃牌步骤: discard step
+
+#### 游戏内容
+
 命火: health
 灵力: mana
 修为: level 

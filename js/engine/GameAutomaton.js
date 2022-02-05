@@ -9,13 +9,16 @@ class GameAutomaton {
             playerState: [new Player_js_1.Player(0, deck[0]), new Player_js_1.Player(1, deck[1])],
             automatonState: {
                 stage: interfaces_js_1.GameStage.INIT,
-                /* true: Alice, false: Bob */
+                /* 0: Alice, 1: Bob */
                 priority: 0,
+                turn: 0,
+                round: 0,
                 operation: interfaces_js_1.PlayerOperation.PRACTICE,
             }
         };
     }
     practice(choice) {
+        this.gameState.playerState[this.gameState.automatonState.turn].practice(choice);
     }
 }
 exports.GameAutomaton = GameAutomaton;
