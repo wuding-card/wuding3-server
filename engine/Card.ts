@@ -32,4 +32,9 @@ export class Card {
   turnFace(face: boolean) {
     this.faceup = face;
   }
+
+  turnTap(tap: boolean) {
+    this.tapped = tap;
+  }
+
 }

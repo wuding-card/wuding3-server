@@ -1,7 +1,14 @@
-import { GameStage, GameState, GameStep, PlayerOperation } from "../regulates/interfaces.js";
+import { ErrorSignal, GameStage, GameState, GameStep, InstantActionState, InstantOperation, IterateSignal, IterateSignalType, PlayerOperation, PlayerSignal, PracticeState } from "../regulates/interfaces.js";
 import { Deck } from "../regulates/types.js";
 import { Card } from "./Card.js";
 import { Player } from "./Player.js";
+
+const DEAFULT_ERROR: IterateSignal = {type: IterateSignalType.ERROR,state: ErrorSignal.DEAFULT_ERROR};
+const ILLEGAL_OPERATION: IterateSignal = {type: IterateSignalType.ERROR,state: ErrorSignal.ILLEGAL_OPERATION};
+
+function requestGenerator(id: number, op: PlayerOperation): IterateSignal{
+  return {type: IterateSignalType.REQUEST,state: [id,op]}
+}
 
 export class GameAutomaton {
   gameState: GameState;
@@ -19,16 +26,55 @@ export class GameAutomaton {
     }
   }
 
-  iterate(signal: any) {
-    switch(this.gameState.automatonState.step) {
+  iterate(signal: PlayerSignal): IterateSignal {
+    const automatonState = this.gameState.automatonState;
+    const playerState = this.gameState.playerState;
+    switch(automatonState.step) {
       case GameStep.GAME_START: {
-        
-        break;
+        automatonState.round = 1;
+        automatonState.step = GameStep.UNTAP;
+        return requestGenerator(automatonState.priority,PlayerOperation.NONE);
       };
       case GameStep.UNTAP: {
-        
-        break;
+        playerState[automatonState.turn].untapAll();
+        return requestGenerator(automatonState.priority,PlayerOperation.INSTANT_ACTION);
       };
+      case GameStep.TURN_START: {
+        if(signal.type != PlayerOperation.INSTANT_ACTION) {
+          return ILLEGAL_OPERATION;
+        } else {
+          const state = signal.state as InstantActionState;
+          switch(state.type) {
+            case InstantOperation.PASS: {
+              if(automatonState.priority != automatonState.turn) {
+                automatonState.priority^=1;
+                automatonState.step = GameStep.PRACTICE;
+                return requestGenerator(automatonState.priority,PlayerOperation.PRACTICE);
+              } else {
+                automatonState.priority^=1;
+                return requestGenerator(automatonState.priority,PlayerOperation.INSTANT_ACTION);
+              }
+            };
+            default: {
+              return DEAFULT_ERROR;
+            };
+          }
+        }
+      };
+      case GameStep.PRACTICE: {
+        if(signal.type != PlayerOperation.PRACTICE) {
+          return ILLEGAL_OPERATION;
+        } else {
+          const state = signal.state as PracticeState;
+          playerState[automatonState.turn].practice(state);
+          automatonState.step = GameStep.ACTION_START;
+          // Todo: Change it into BATTLE
+          return requestGenerator(automatonState.priority,PlayerOperation.INSTANT_ACTION);
+        }
+      }
+      default: {
+        return DEAFULT_ERROR;
+      }
     }
   }
 

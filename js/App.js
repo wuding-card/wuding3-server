@@ -11,7 +11,7 @@ const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
 const io = new socket_io_1.Server(httpServer, { /* options */});
 const gameAutomaton = new GameAutomaton_js_1.GameAutomaton([["基础拳法"], ["基础拳法"]]);
-console.log(gameAutomaton.gameState.playerState[1].basicState.level);
+console.log(typeof (gameAutomaton.gameState));
 io.on("connection", (socket) => {
     // ...
 });

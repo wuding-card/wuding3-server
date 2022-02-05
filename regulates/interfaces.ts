@@ -1,11 +1,11 @@
 import { Card } from "../engine/Card"
 import { Player } from "../engine/Player"
 
-
-
 export enum PlayerOperation {
+  NONE,
   PRACTICE,
-  ACTION,
+  INSTANT_ACTION,
+  FREE_ACTION,
 }
 
 export enum GameStage {
@@ -25,6 +25,48 @@ export enum GameStep {
   TURN_END,
   DISCARD,
   GAME_END,
+}
+
+export enum GameResult {
+  AWIN,
+  BWIN,
+  DRAW,
+}
+
+export enum ErrorSignal {
+  DEAFULT_ERROR,
+  ILLEGAL_OPERATION,
+}
+
+export enum InstantOperation {
+  PASS,
+  // Todo: add more instant operation
+}
+export enum FreeOperation {
+  PASS,
+  CAST,
+}
+export enum IterateSignalType {
+  REQUEST,
+  ERROR,
+  GAMEEND,
+}
+export interface IterateSignal {
+  type: IterateSignalType,
+  state: [number,PlayerOperation] | ErrorSignal | GameResult,
+}
+export type PracticeState = number;
+export interface FreeActionState {
+  type: FreeOperation,
+  state: null | number,
+}
+export interface InstantActionState {
+  type: InstantOperation,
+  state: null,
+}
+export interface PlayerSignal {
+  type: PlayerOperation,
+  state: null | PracticeState | FreeActionState | InstantActionState;
 }
 
 export interface GameState {

@@ -23,5 +23,8 @@ class Card {
     turnFace(face) {
         this.faceup = face;
     }
+    turnTap(tap) {
+        this.tapped = tap;
+    }
 }
 exports.Card = Card;

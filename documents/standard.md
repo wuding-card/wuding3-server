@@ -14,16 +14,28 @@
 游戏开始步骤: gameStart step
 准备阶段: prepare stage
   重置步骤: untap step (C)
-  回合开始步骤: turnStart step
-  修炼步骤: practice step
+  回合开始步骤: turnStart step (I)
+  修炼步骤: practice step (P)
+战斗阶段: battle stage
+  战斗开始步骤: battle step (I)
+  攻击步骤: attack step (A)
 行动阶段: action stage
-  行动开始步骤: actionStart step
-  自由行动步骤: freeAction step
-  行动结束步骤: actionEnd step
+  行动开始步骤: actionStart step (I)
+  自由行动步骤: freeAction step (F)
+  行动结束步骤: actionEnd step (I)
 结束阶段
-  结束步骤: turnEnd step
-  弃牌步骤: discard step
+  结束步骤: turnEnd step (F)
+  弃牌步骤: discard step (C)
 游戏结束步骤: gameEnd step
+
+操作：operator
+  - 修炼: practice (P)
+    玩家需要在两项中选择其一：摸 2 张牌，或是增加 1 修为。
+  - 自由行动: freeAction (F)
+    玩家可以进行以下动作中的任意多个:
+      从手牌中选择 1 张可用的即时法术牌，支付其释放费用，并依照牌面要求选择合法目标。若法术牌不可用，或无法支付其释放费用，或支付其释放费用后无法选择合法目标，则不能进行这个动作。
+  - 瞬间行动: instantAction (F)
+  - 攻击行动: attack (A)
 
 #### 游戏内容
 
@@ -36,12 +48,7 @@
 优先权: priority
 先手玩家: Alice
 后手玩家: Bob
-行动：
-  - 修炼: practice
-    修炼动作，玩家需要在两项中选择其一：摸 2 张牌，或是增加 1 修为。
-  - 行动: action
-    行动动作，玩家可以进行以下动作中的任意多个:
-      从手牌中选择 1 张可用的即时法术牌，支付其释放费用，并依照牌面要求选择合法目标。若法术牌不可用，或无法支付其释放费用，或支付其释放费用后无法选择合法目标，则不能进行这个动作。
+
 事件: 
   - 疲劳: exuast
     当你试图抽 1 张牌而灵犀瓶里没有牌时，你失去 1 点命火。

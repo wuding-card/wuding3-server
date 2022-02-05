@@ -25,6 +25,7 @@ class Player {
             this.handState.push(new Card_1.Card(deck[i]));
         }
         this.shuffleLibrary();
+        this.draw(5);
     }
     shuffleLibrary() {
         this.handState.sort((a, b) => (Math.random() - 0.5));
@@ -51,12 +52,27 @@ class Player {
     levelChange(times = 1) {
         this.basicState.level += times;
     }
+    practice(choice) {
+        choice == 0 ? this.draw(this.actionState.drawPerPractice) : this.levelChange();
+    }
     /* true means live while false means dead */
     stateCheck() {
         return this.basicState.health >= 0;
     }
-    practice(choice) {
-        choice == 0 ? this.draw(this.actionState.drawPerPractice) : this.levelChange();
+    manaRestore() {
+        this.basicState.mana = Math.max(this.basicState.mana, this.basicState.level);
+    }
+    untapAll() {
+        for (const i of this.groundState.sorceryState) {
+            i.turnTap(false);
+        }
+        for (const i of this.groundState.zisurruState) {
+            i.turnTap(false);
+        }
+        for (const i of this.groundState.equipmentState) {
+            i.turnTap(false);
+        }
+        this.manaRestore();
     }
 }
 exports.Player = Player;
