@@ -1,5 +1,8 @@
+import { Card } from "../engine/Card";
+
 export abstract class GameTarget {
   abstract legal(): boolean;
+  abstract extract(): [number[],Card[]];
 }
 
 export class PlayerTarget extends GameTarget {
@@ -9,7 +12,11 @@ export class PlayerTarget extends GameTarget {
     this.player = player;
   }
   
-  legal() {
+  extract(): [number[], Card[]] {
+    return [[this.player],[]];
+  }
+
+  legal(): boolean {
     return true;
   }
 }
@@ -20,7 +27,19 @@ export class UnionTarget extends GameTarget {
     super();
     this.targets = targets;
   }
-  legal() {
+
+  extract(): [number[], Card[]] {
+    const players: number[] = [];
+    const cards: Card[] = [];
+    for(const i of this.targets) {
+      const [nowPlayers,nowCards] = i.extract();
+      players.push(...nowPlayers);
+      cards.push(...nowCards);
+    }
+    return [players,cards];
+  }
+
+  legal(): boolean {
     let ret = false;
     for(const i of this.targets) {
       ret = ret || i.legal();

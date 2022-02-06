@@ -9,6 +9,9 @@ class PlayerTarget extends GameTarget {
         super();
         this.player = player;
     }
+    extract() {
+        return [[this.player], []];
+    }
     legal() {
         return true;
     }
@@ -18,6 +21,16 @@ class UnionTarget extends GameTarget {
     constructor(...targets) {
         super();
         this.targets = targets;
+    }
+    extract() {
+        const players = [];
+        const cards = [];
+        for (const i of this.targets) {
+            const [nowPlayers, nowCards] = i.extract();
+            players.push(...nowPlayers);
+            cards.push(...nowCards);
+        }
+        return [players, cards];
     }
     legal() {
         let ret = false;
