@@ -2,6 +2,7 @@ import { DiscardState, ErrorSignal, FreeActionState, FreeOperation, GameResult, 
 import { Deck } from "../regulates/types.js";
 import { assert } from "../regulates/utils.js";
 import { Card } from "./Card.js";
+import { EventStack } from "./EventStack.js";
 import { Player } from "./Player.js";
 
 const DEAFULT_ERROR: IterateSignal = {type: IterateSignalType.ERROR,state: ErrorSignal.DEAFULT_ERROR};
@@ -23,6 +24,7 @@ const expectedOperation: Record<number,PlayerOperation> = {
 
 export class GameAutomaton {
   gameState: GameState;
+  stack: EventStack;
   constructor(deck: Array<Deck>){
     this.gameState = {
       playerState: [new Player(0,deck[0]),new Player(1,deck[1])],
@@ -34,8 +36,8 @@ export class GameAutomaton {
         turn: 0,
         round: 0,
       },
-      stack: [],
     }
+    this.stack = new EventStack(this.gameState);
   }
 
   requestGenerator(op: PlayerOperation): IterateSignal{
@@ -76,7 +78,7 @@ export class GameAutomaton {
             case InstantOperation.PASS: {
               if(automatonState.priority != automatonState.turn) {
                 automatonState.priority^=1;
-                if(this.gameState.stack.length == 0) {
+                if(this.stack.empty()) {
                   ++automatonState.step;
                   return this.requestGenerator(expectedOperation[automatonState.step]);
                 } else {

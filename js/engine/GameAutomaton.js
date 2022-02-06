@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameAutomaton = void 0;
 const interfaces_js_1 = require("../regulates/interfaces.js");
 const utils_js_1 = require("../regulates/utils.js");
+const EventStack_js_1 = require("./EventStack.js");
 const Player_js_1 = require("./Player.js");
 const DEAFULT_ERROR = { type: interfaces_js_1.IterateSignalType.ERROR, state: interfaces_js_1.ErrorSignal.DEAFULT_ERROR };
 const ILLEGAL_OPERATION = { type: interfaces_js_1.IterateSignalType.ERROR, state: interfaces_js_1.ErrorSignal.ILLEGAL_OPERATION };
@@ -32,8 +33,8 @@ class GameAutomaton {
                 turn: 0,
                 round: 0,
             },
-            stack: [],
         };
+        this.stack = new EventStack_js_1.EventStack(this.gameState);
     }
     requestGenerator(op) {
         return { type: interfaces_js_1.IterateSignalType.REQUEST, state: [this.gameState.automatonState.priority, op] };
@@ -78,7 +79,7 @@ class GameAutomaton {
                                 {
                                     if (automatonState.priority != automatonState.turn) {
                                         automatonState.priority ^= 1;
-                                        if (this.gameState.stack.length == 0) {
+                                        if (this.stack.empty()) {
                                             ++automatonState.step;
                                             return this.requestGenerator(expectedOperation[automatonState.step]);
                                         }

@@ -26,5 +26,7 @@ class Card {
     turnTap(tap) {
         this.tapped = tap;
     }
+    onResolve() {
+    }
 }
 exports.Card = Card;

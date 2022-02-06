@@ -37,4 +37,7 @@ export class Card {
     this.tapped = tap;
   }
 
+  onResolve() {
+    
+  }
 }

@@ -1,5 +1,8 @@
 import { Card } from "../engine/Card"
+import { EventStack } from "../engine/EventStack";
 import { Player } from "../engine/Player"
+import { GameEvent } from "../events/GameEvent";
+import { GameTarget } from "../targets/GameTarget";
 
 // Todo: Add DEFENSE.
 export enum PlayerOperation {
@@ -92,5 +95,15 @@ export interface GameState {
     turn: number,
     round: number,
   }
-  stack: Card[],
+}
+
+export enum EventItemType {
+  EVENT,
+  IMMEDIATE,
+}
+
+export interface EventItem {
+  type: EventItemType,
+  target: GameTarget,
+  container: GameEvent | Card,
 }
