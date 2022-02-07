@@ -1,4 +1,4 @@
-import { CastInfo } from "../regulates/interfaces";
+import { CastInfo, GameState } from "../regulates/interfaces";
 import { cardLib, SectID, TypeID, LevelID } from "../regulates/resources";
 import { Target } from "../regulates/types";
 import { CardUID, castAnalyze } from "../regulates/utils";
@@ -44,9 +44,14 @@ export class Card {
     this.tapped = tap;
   }
 
+  spendCost(playerState: GameState): boolean {
+    let ret = true;
+    return ret;
+  }
 
-
-  onResolve(targets: Target[]) {
-    
+  onResolve(gameState: GameState, targets: Target[]) {
+    for(const i of this.cast.resolveEvent.events) {
+      i.resolve(gameState, targets);
+    }
   }
 }

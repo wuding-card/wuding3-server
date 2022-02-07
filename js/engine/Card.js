@@ -29,7 +29,14 @@ class Card {
     turnTap(tap) {
         this.tapped = tap;
     }
-    onResolve(targets) {
+    spendCost(playerState) {
+        let ret = true;
+        return ret;
+    }
+    onResolve(gameState, targets) {
+        for (const i of this.cast.resolveEvent.events) {
+            i.resolve(gameState, targets);
+        }
     }
 }
 exports.Card = Card;
