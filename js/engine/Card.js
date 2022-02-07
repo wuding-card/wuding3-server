@@ -29,9 +29,24 @@ class Card {
     turnTap(tap) {
         this.tapped = tap;
     }
-    spendCost(playerState) {
-        let ret = true;
-        return ret;
+    spendCost(player) {
+        for (const i of this.cast.castCost) {
+            switch (i.type) {
+                case "mana": {
+                    if (!(player.basicState.mana >= i.value)) {
+                        return false;
+                    }
+                    else {
+                        player.basicState.mana -= i.value;
+                    }
+                    break;
+                }
+                default: {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     onResolve(gameState, targets) {
         for (const i of this.cast.resolveEvent.events) {

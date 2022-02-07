@@ -2,6 +2,7 @@ import { CastInfo, GameState } from "../regulates/interfaces";
 import { cardLib, SectID, TypeID, LevelID } from "../regulates/resources";
 import { Target } from "../regulates/types";
 import { CardUID, castAnalyze } from "../regulates/utils";
+import { Player } from "./Player";
 
 export class Card {
   name: string;
@@ -44,9 +45,23 @@ export class Card {
     this.tapped = tap;
   }
 
-  spendCost(playerState: GameState): boolean {
-    let ret = true;
-    return ret;
+  spendCost(player: Player): boolean {
+    for(const i of this.cast.castCost) {
+      switch(i.type) {
+        case "mana": {
+          if(! (player.basicState.mana >= i.value)) {
+            return false;
+          } else {
+            player.basicState.mana -= i.value;
+          }
+          break;
+        }
+        default: {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   onResolve(gameState: GameState, targets: Target[]) {
