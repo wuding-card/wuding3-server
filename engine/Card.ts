@@ -1,4 +1,7 @@
-import { cardLib, LevelID, SectID, TypeID } from "../regulates/utils";
+import { CastInfo } from "../regulates/interfaces";
+import { cardLib, SectID, TypeID, LevelID } from "../regulates/resources";
+import { Target } from "../regulates/types";
+import { CardUID, castAnalyze } from "../regulates/utils";
 
 export class Card {
   name: string;
@@ -10,6 +13,8 @@ export class Card {
   level: number;
   typeID: number;
   rarity: number;
+  UID: number;
+  cast: CastInfo;
   
   constructor(name: string) {
     const card = cardLib[name];
@@ -22,11 +27,13 @@ export class Card {
     this.typeID = TypeID[card["type"]];
     this.level = LevelID[card["level"]];
     this.rarity = card["rarity"];
+    this.UID = CardUID.get();
     for(const i of ["power","defense",'durability','castCost','maintainCost']){
-      if(card[i] != ""){
-        this.attribute[i]=card[i];
+      if(card.attribute[i] != ""){
+        this.attribute[i]=card.attribute[i];
       }
     }
+    this.cast = castAnalyze(card.cast);
   }
 
   turnFace(face: boolean) {
@@ -37,7 +44,9 @@ export class Card {
     this.tapped = tap;
   }
 
-  onResolve() {
+
+
+  onResolve(targets: Target[]) {
     
   }
 }

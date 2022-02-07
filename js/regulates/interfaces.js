@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventItemType = exports.IterateSignalType = exports.FreeOperation = exports.InstantOperation = exports.ErrorSignal = exports.GameResult = exports.GameStep = exports.GameStage = exports.PlayerOperation = void 0;
+/* ======== GameProcess And Signal ======== */
 // Todo: Add DEFENSE.
 var PlayerOperation;
 (function (PlayerOperation) {
@@ -9,7 +10,8 @@ var PlayerOperation;
     PlayerOperation[PlayerOperation["INSTANT_ACTION"] = 2] = "INSTANT_ACTION";
     PlayerOperation[PlayerOperation["FREE_ACTION"] = 3] = "FREE_ACTION";
     PlayerOperation[PlayerOperation["ATTACK"] = 4] = "ATTACK";
-    PlayerOperation[PlayerOperation["DISCARD"] = 5] = "DISCARD";
+    PlayerOperation[PlayerOperation["BLOCK"] = 5] = "BLOCK";
+    PlayerOperation[PlayerOperation["DISCARD"] = 6] = "DISCARD";
 })(PlayerOperation = exports.PlayerOperation || (exports.PlayerOperation = {}));
 var GameStage;
 (function (GameStage) {
@@ -65,6 +67,8 @@ var IterateSignalType;
     IterateSignalType[IterateSignalType["ERROR"] = 1] = "ERROR";
     IterateSignalType[IterateSignalType["GAME_END"] = 2] = "GAME_END";
 })(IterateSignalType = exports.IterateSignalType || (exports.IterateSignalType = {}));
+;
+;
 var EventItemType;
 (function (EventItemType) {
     EventItemType[EventItemType["EVENT"] = 0] = "EVENT";

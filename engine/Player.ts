@@ -1,5 +1,5 @@
-import { DiscardState } from "../regulates/interfaces";
-import { Deck } from "../regulates/types";
+import { DiscardState, GameState } from "../regulates/interfaces";
+import { Deck, Target } from "../regulates/types";
 import { assert } from "../regulates/utils";
 import { Card } from "./Card"
 
@@ -9,15 +9,7 @@ export class Player {
     mana: number,
     level: number,
   };
-  groundState: {
-    sorceryState: Card[],
-    equipmentState: Card[],
-    zisurruState: Card[],
-    libraryState: Card[],
-    graveyardState: Card[],
-    blackholeState: Card[],
-  };
-  handState: Card[];
+  groundState: Record<string,Card[]>;
   actionState: {
     drawPerPractice: number,
   };
@@ -34,13 +26,13 @@ export class Player {
       libraryState: [],
       graveyardState: [],
       blackholeState: [],
+      handState: [],
     };
-    this.handState =  [];
     this.actionState = {
       drawPerPractice: 2,
     }
     for(const i in deck) {
-      this.handState.push(
+      this.groundState.handState.push(
         new Card(deck[i])
       );
     }
@@ -50,7 +42,7 @@ export class Player {
 
 
   shuffleLibrary() {
-    this.handState.sort((a,b) => (Math.random()-0.5));
+    this.groundState.handState.sort((a,b) => (Math.random()-0.5));
   }
 
   hurt(val: number = 1) {
@@ -68,7 +60,7 @@ export class Player {
       }else{
         const nowCard = top?this.groundState.libraryState.pop():this.groundState.libraryState.shift();
         if(nowCard !== undefined) {
-          this.handState.push(nowCard);
+          this.groundState.handState.push(nowCard);
         }
       }
     }
@@ -107,10 +99,32 @@ export class Player {
   discard(state: DiscardState) {
     state.sort();
     for(let i = state.length - 1; i >= 0; --i) {
-      const card = this.handState.splice(state[i],1);
+      const card = this.groundState.handState.splice(state[i],1);
       assert(card.length == 1);
       card[0].turnFace(true);
       this.groundState.graveyardState.push(card[0]);
+    }
+  }
+
+  search(id: number[], location: string[]): Card[]{
+    const ret: Card[] = [];
+    for(const i of location) {
+      for(const j of this.groundState[i]) {
+        for(const k of id) {
+          if(j.UID == k) {
+            ret.push(j);
+          }
+        }
+      }
+    }
+    return ret;
+  }
+
+  cast(id: number, targets: Target[],gameState: GameState) {
+    const cards = this.search([id], ["handState"]);
+    const card = cards[0];
+    if(card){
+      
     }
   }
 }

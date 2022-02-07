@@ -2,6 +2,8 @@ import { GameEvent } from "../events/GameEvent";
 import { EventItem, EventItemType, GameState } from "../regulates/interfaces";
 import { assert } from "../regulates/utils";
 
+// Stack is temporarily disposed.
+
 export class EventStack {
   stack: EventItem[] = [];
   gameState: GameState;
@@ -29,7 +31,7 @@ export class EventStack {
     switch(item.type) {
       case EventItemType.EVENT: {
         const event = item.container as GameEvent;
-        event.resolve(this.gameState);
+        event.resolve(this.gameState,item.targets);
       }
       case EventItemType.IMMEDIATE: {
 

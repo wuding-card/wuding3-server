@@ -1,1 +1,17 @@
-cardEvent{}
+{
+	"基础拳法": {
+		"cast": {
+			"castCost": {
+				"mana": 2,
+			}
+			"resolveEvent": [
+				"expectedTarget": {
+					"player": 1,
+				}
+				"dealDamage": {
+					"value": 3,
+				}
+			],
+		}
+	}
+}

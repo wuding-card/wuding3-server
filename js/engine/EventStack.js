@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventStack = void 0;
 const interfaces_1 = require("../regulates/interfaces");
 const utils_1 = require("../regulates/utils");
+// Stack is temporarily disposed.
 class EventStack {
     constructor(gameState) {
         this.stack = [];
@@ -25,7 +26,7 @@ class EventStack {
         switch (item.type) {
             case interfaces_1.EventItemType.EVENT: {
                 const event = item.container;
-                event.resolve(this.gameState);
+                event.resolve(this.gameState, item.targets);
             }
             case interfaces_1.EventItemType.IMMEDIATE: {
             }

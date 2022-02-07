@@ -2,7 +2,10 @@ import { Card } from "../engine/Card"
 import { EventStack } from "../engine/EventStack";
 import { Player } from "../engine/Player"
 import { GameEvent } from "../events/GameEvent";
-import { GameTarget } from "../targets/GameTarget";
+import { Limit } from "./limits";
+import { Target } from "./types";
+
+/* ======== GameProcess And Signal ======== */
 
 // Todo: Add DEFENSE.
 export enum PlayerOperation {
@@ -11,6 +14,7 @@ export enum PlayerOperation {
   INSTANT_ACTION,
   FREE_ACTION,
   ATTACK,
+  BLOCK,
   DISCARD,
 }
 
@@ -71,19 +75,45 @@ export interface IterateSignal {
   state: [number,PlayerOperation] | ErrorSignal | GameResult,
 }
 export type PracticeState = number;
-export interface FreeActionState {
-  type: FreeOperation,
-  state: null | number,
+export type FreeActionState = {
+  type: FreeOperation.PASS,
+  state: null,
+} | {
+  type: FreeOperation.CAST,
+  state: [number,Target[]],
 }
 export interface InstantActionState {
   type: InstantOperation,
   state: null,
 }
 export type DiscardState = number[];
-export interface PlayerSignal {
-  type: PlayerOperation,
-  state: null | PracticeState | FreeActionState | InstantActionState | DiscardState;
-}
+export interface AttackState {};
+export interface BlockState {};
+
+export type PlayerSignal = {
+  type: PlayerOperation.NONE,
+  state: null,
+} | {
+  type: PlayerOperation.PRACTICE,
+  state: PracticeState,
+} | {
+  type: PlayerOperation.FREE_ACTION,
+  state: FreeActionState,
+} | {
+  type: PlayerOperation.INSTANT_ACTION,
+  state: InstantActionState,
+} | {
+  type: PlayerOperation.ATTACK,
+  state: AttackState,
+} | {
+  type: PlayerOperation.BLOCK,
+  state: BlockState,
+} | {
+  type: PlayerOperation.DISCARD,
+  state: DiscardState,
+} 
+
+/* ======== GameState ======== */
 
 export interface GameState {
   playerState: Player[],
@@ -104,6 +134,20 @@ export enum EventItemType {
 
 export interface EventItem {
   type: EventItemType,
-  target: GameTarget,
+  targets: Target[],
   container: GameEvent | Card,
+}
+
+/* ======== CardState ======== */
+
+export type CostInfo = {
+  type: "mana",
+  value: number,
+}
+
+export interface CastInfo {
+  castCost: CostInfo[],
+  resolveEvent: {
+    events: GameEvent[],
+  }
 }

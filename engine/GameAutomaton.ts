@@ -108,7 +108,8 @@ export class GameAutomaton {
         }
       }
       case GameStep.ATTACK: {
-        return FUTURE_FEATURE;
+        ++automatonState.stage;++automatonState.step;
+        return this.requestGenerator(expectedOperation[automatonState.step]);
       }
       case GameStep.FREE_ACTION: {
         assert(automatonState.priority == automatonState.turn);
@@ -122,9 +123,8 @@ export class GameAutomaton {
             };
             case FreeOperation.CAST: {
               // Todo: Actions should enter stack.
-              
-              // Todo: Deal with CAST.
-
+              // Todo: Refactor this.
+              playerState[automatonState.turn].cast(state.state[0],state.state[1],this.gameState);
               return this.requestGenerator(PlayerOperation.FREE_ACTION);
             }
             default: {
