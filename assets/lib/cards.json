@@ -19,8 +19,7 @@
 				"events": [
 					{
 						"dealDamage": {
-							"amount": 3,
-							"target": 0
+							"amount": 3
 						}
 					}
 				]

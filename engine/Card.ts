@@ -64,7 +64,7 @@ export class Card {
     return true;
   }
 
-  onResolve(gameState: GameState, targets: Target[]) {
+  resolve(gameState: GameState, targets: Target[]) {
     for(const i of this.cast.resolveEvent.events) {
       i.resolve(gameState, targets);
     }

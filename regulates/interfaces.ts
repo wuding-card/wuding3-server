@@ -151,3 +151,12 @@ export interface CastInfo {
     events: GameEvent[],
   }
 }
+
+/* ======== EventState ======== */
+
+export type EventInfo = {
+  type: "dealDamage",
+  state: {
+    amount: number
+  }
+}

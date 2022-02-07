@@ -1,5 +1,5 @@
-import { GameEvent } from "../events/GameEvent";
-import { CastInfo, CostInfo } from "./interfaces";
+import { DealDamage, GameEvent, MyErrorEvent } from "../events/GameEvent";
+import { CastInfo, CostInfo, EventInfo } from "./interfaces";
 
 export function assert(condition: boolean) {
   if(!condition){
@@ -30,5 +30,19 @@ export function castAnalyze(castInfo: any): CastInfo {
     } as CostInfo;
     ret.castCost.push(cost);
   }
+  for(const i in castInfo.resolveEvent.events) {
+
+  }
   return ret;
+}
+
+export function eventFactory(eventInfo: EventInfo): GameEvent{
+  switch(eventInfo.type) {
+    case "dealDamage": {
+      return new DealDamage(eventInfo.state.amount);
+    }
+    default: {
+      return new MyErrorEvent("Event Factory missed type.");
+    }
+  }
 }
