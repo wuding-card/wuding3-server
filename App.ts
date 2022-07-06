@@ -5,12 +5,13 @@ import { GameAutomaton } from "./engine/GameAutomaton.js";
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer);
 
 const gameAutomaton = new GameAutomaton([["基础拳法"],["基础拳法"]]);
-console.log(typeof(gameAutomaton.gameState));
+
 io.on("connection", (socket) => {
-  // ...
+  socket.emit("hello","world");
+  console.log("connected");
 });
 
-httpServer.listen(3000);
+httpServer.listen(2678);

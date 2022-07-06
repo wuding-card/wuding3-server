@@ -123,8 +123,8 @@ export class Player {
   cast(id: number, targets: Target[],gameState: GameState) {
     const cards = this.search([id], ["handState"]);
     const card = cards[0];
-    if(card){
-      
+    if(card.spendCost(this)){
+      card.resolve(gameState, targets);
     }
   }
 }
