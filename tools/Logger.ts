@@ -1,17 +1,60 @@
-export class Logger {
-  private static logLevelOption: Record<string, boolean>;
-  // Singleton
-  private static instance: Logger;
-  private constructor() {
-    Logger.logLevelOption['Info'] = true;
-    Logger.logLevelOption['Warn'] = true;
-    Logger.logLevelOption['Error'] = true;
-    Logger.logLevelOption['']
+import winston, { format } from "winston";
+const { MESSAGE } = require('triple-beam');
+
+const myFormat = format(info => {
+  const stringifiedRest = JSON.stringify(Object.assign({}, info, {
+    level: undefined,
+    message: undefined,
+    splat: undefined,
+    timestamp: undefined,
+  }));
+  const padding = info.padding && info.padding[info.level] || '';
+  if (stringifiedRest !== '{}') {
+    info[MESSAGE] = `[${info.timestamp}][${info.level}]:${padding} ${info.message} ${stringifiedRest}`;
+  } else {
+    info[MESSAGE]  = `[${info.timestamp}][${info.level}]:${padding} ${info.message}`;
   }
-  static getInstance() {
-    if(!this.instance) {
-      this.instance = new Logger();
-    }
-    return this.instance;
+  return info;
+});
+
+const config = {
+  levels: {
+    error: 0,
+    debug: 1,
+    warn: 2,
+    data: 3,
+    info: 4,
+    verbose: 5,
+    silly: 6,
+  },
+  colors: {
+    error: 'red',
+    debug: 'blue',
+    warn: 'yellow',
+    data: 'grey',
+    info: 'green',
+    verbose: 'cyan',
+    silly: 'magenta',
   }
-}
+};
+
+winston.addColors(config.colors);
+
+export const logger = winston.createLogger({
+  levels: config.levels,
+  level: 'info',
+  format: format.combine(
+    format.timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss'
+    }),
+    format.errors({ stack: true }),
+    format.splat(),
+    format.json(),
+    format.colorize(),
+    myFormat(),
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "./logs/server.log" }),
+  ],
+});
