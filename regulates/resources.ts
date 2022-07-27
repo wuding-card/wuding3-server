@@ -1,6 +1,10 @@
 import cardJSON from '../assets/lib/cards.json';
+import deckJSON from '../assets/lib/decks.json';
+import { Deck } from './types';
 
 export const cardLib: Record<string,any> = cardJSON;
+
+export const deckLib: Record<string,Deck> = deckJSON;
 
 export const SectID: Record<string,number> = {
   "通用": 0,

@@ -32,7 +32,7 @@ export class Player {
       drawPerPractice: 2,
     }
     for(const i in deck) {
-      this.groundState.handState.push(
+      this.groundState.libraryState.push(
         new Card(deck[i])
       );
     }
@@ -56,7 +56,7 @@ export class Player {
   draw(times: number = 1, top: boolean = true) {
     for(let i = 0; i < times; ++i) {
       if(this.groundState.libraryState.length == 0) {
-        this.hurt();
+        this.exhaust();
       }else{
         const nowCard = top?this.groundState.libraryState.pop():this.groundState.libraryState.shift();
         if(nowCard !== undefined) {

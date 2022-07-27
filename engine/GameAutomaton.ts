@@ -39,11 +39,13 @@ export class GameAutomaton {
     }
     this.stack = new EventStack(this.gameState);
   }
-
+  // This function is used to pack the PlayerOperation into IterateSignal.
   requestGenerator(op: PlayerOperation): IterateSignal{
     return {type: IterateSignalType.REQUEST,state: [this.gameState.automatonState.priority,op]}
   }
 
+  // This function is a wrap-up of __iterate().
+  // 
   iterate(signal: PlayerSignal): IterateSignal {
     let ret = this.__iterate(signal);
     const playerState = this.gameState.playerState;
@@ -52,7 +54,8 @@ export class GameAutomaton {
     }
     return ret;
   }
-
+  // This function means the automaton step forward.
+  // This function receives a PlayerSignal, and return an IterateSignal.
   __iterate(signal: PlayerSignal): IterateSignal {
     const automatonState = this.gameState.automatonState;
     const playerState = this.gameState.playerState;

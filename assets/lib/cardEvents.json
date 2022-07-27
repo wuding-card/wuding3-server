@@ -3,7 +3,7 @@
 		"cast": {
 			"castCost": {
 				"mana": 2,
-			}
+			} 
 			"resolveEvent": [
 				"expectedTarget": {
 					"player": 1,
