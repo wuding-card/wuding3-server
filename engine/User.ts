@@ -5,6 +5,9 @@ export class User {
   socket: any; // The handle got by socket.io.
   userName: string | null = null;
   room: Room | null = null;
+  emit(type: string, para: any) {
+    this.socket.emit(type, para);
+  }
   joinRoom(name: string) {
       const roomManager = RoomManager.getInstance();
       const socket = this.socket;
@@ -15,7 +18,7 @@ export class User {
         // Leave old room if the new room is not the old room.
         if(roomManager.getRoom(name) !== this.room) {
           if(this.room != null) {
-            this.room.removeUser(this.userName);
+            this.room.removeUser(this);
           }
         }
         // Create new room if no room with specified room exists.
@@ -26,10 +29,10 @@ export class User {
         
         this.room = roomManager.getRoom(name);
 
-        if(this.room.hasUser(this.userName)) {
+        if(this.room.hasUser(this)) {
           logger.info('User %s HAS ALREADY IN room with name %s', this.userName, name);
         }else{
-          if(this.room.addUser(this.userName)) {
+          if(this.room.addUser(this)) {
             logger.info('User %s joined room with name: %s successfully.', this.userName, name);
           }else{
             logger.warn('User %s join room with name %s failed: room is full.', this.userName, name);
@@ -37,8 +40,7 @@ export class User {
           }
         }
         // Todo: 此处应当广播
-        logger.verbose('Room %s sent to user %s', this.room, this.userName);
-        socket.emit('renew-room-state', this.room);
+        this.room.renewRoom();
         // Join the room.
       }
   }

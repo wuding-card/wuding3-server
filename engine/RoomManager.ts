@@ -1,41 +1,54 @@
-import { GameStage, GameState, IterateSignal } from "../regulates/interfaces";
+import { GameStage, GameState, IterateSignal, RoomState } from "../regulates/interfaces";
 import { deckLib } from "../regulates/resources";
+import { logger } from "../tools/Logger";
 import { GameAutomaton } from "./GameAutomaton";
 import { User } from "./User";
 
 export class Room {
-  roomName: string;
-  gameAutomaton: GameAutomaton | null = null;
-  users: string[] = [];
-  iterateSignal: IterateSignal | null = null;
+  
+  users: User[] = [];
+  roomState: RoomState;
+  
   constructor(name: string) {
-    this.roomName = name;
+    this.roomState = {
+      iterateSignal: null,
+      gameAutomaton: null,
+      roomName: name,
+    };
   }
 
   startGame() {
-    return this.gameAutomaton = new GameAutomaton([deckLib["testDeck1"], deckLib["testDeck1"]])
+    return this.roomState.gameAutomaton = new GameAutomaton([deckLib["testDeck1"], deckLib["testDeck1"]])
   }
 
-  addUser(userName: string) {
+  addUser(user: User) {
     if(this.users.length >= 2){
       return false;
     }else{
-      this.users.push(userName);
+      this.users.push(user);
       return true;
     }
   }
 
-  hasUser(userName: string) {
-    for(const i of this.users) {
-      if(i == userName) {
+  hasUser(user: User) {
+    for(const i in this.users) {
+      if(this.users[i].userName == user.userName) {
+        this.users[i] = user;
         return true;
       }
     }
     return false;
   }
 
-  removeUser(userName: string) {
-    this.users.filter(i => i != userName);
+  removeUser(user: User) {
+    this.users.filter(i => i.userName != user.userName);
+  }
+
+  renewRoom() {
+    for(const i of this.users) {
+      logger.verbose('Room %s renew to user %s', this, i.userName);
+      i.emit('renew-room-state', this.roomState);
+    }
   }
 
 }

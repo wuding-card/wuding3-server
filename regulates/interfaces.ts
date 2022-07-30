@@ -1,5 +1,6 @@
 import { Card } from "../engine/Card"
 import { EventStack } from "../engine/EventStack";
+import { GameAutomaton } from "../engine/GameAutomaton";
 import { Player } from "../engine/Player"
 import { GameEvent } from "../events/GameEvent";
 import { Limit } from "./limits";
@@ -159,4 +160,11 @@ export type EventInfo = {
   state: {
     amount: number
   }
+}
+
+/* ======== RoomState ======== */
+export interface RoomState {
+  iterateSignal: IterateSignal | null;
+  roomName: string;
+  gameAutomaton: GameAutomaton | null;
 }
