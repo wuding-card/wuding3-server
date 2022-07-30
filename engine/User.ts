@@ -38,7 +38,7 @@ export class User {
         }
         // Todo: 此处应当广播
         logger.verbose('Room %s sent to user %s', this.room, this.userName);
-        socket.emit('join-room-successful', this.room);
+        socket.emit('renew-room-state', this.room);
         // Join the room.
       }
   }
