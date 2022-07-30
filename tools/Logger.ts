@@ -1,5 +1,5 @@
 import winston, { format } from "winston";
-const { MESSAGE } = require('triple-beam');
+import { MESSAGE } from 'triple-beam';
 
 const myFormat = format(info => {
   const stringifiedRest = JSON.stringify(Object.assign({}, info, {

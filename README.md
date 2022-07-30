@@ -1,6 +1,10 @@
 # wuding3-server
 The third generation wuding-card server
 
+## automaton.md
+
+Regulated some variables' name and the steps of the whole automaton.
+
 ## start.md
 
 Read this file to get basic information of the tools chain and how to continue work.
