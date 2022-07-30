@@ -42,7 +42,7 @@ winston.addColors(config.colors);
 
 export const logger = winston.createLogger({
   levels: config.levels,
-  level: 'info',
+  level: 'verbose',
   format: format.combine(
     format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss'

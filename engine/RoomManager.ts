@@ -3,20 +3,41 @@ import { deckLib } from "../regulates/resources";
 import { GameAutomaton } from "./GameAutomaton";
 import { User } from "./User";
 
-class Room {
-  gameAutomaton: GameAutomaton | null;
-  user: string[];
+export class Room {
+  roomName: string;
+  gameAutomaton: GameAutomaton | null = null;
+  users: string[] = [];
   iterateSignal: IterateSignal | null = null;
-  constructor() {
-    this.user = ["AnonymousID1", "AnonymousID2"];
-    this.gameAutomaton = null;
+  constructor(name: string) {
+    this.roomName = name;
   }
 
   startGame() {
     return this.gameAutomaton = new GameAutomaton([deckLib["testDeck1"], deckLib["testDeck1"]])
   }
 
-  
+  addUser(userName: string) {
+    if(this.users.length >= 2){
+      return false;
+    }else{
+      this.users.push(userName);
+      return true;
+    }
+  }
+
+  hasUser(userName: string) {
+    for(const i of this.users) {
+      if(i == userName) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeUser(userName: string) {
+    this.users.filter(i => i != userName);
+  }
+
 }
 
 export class RoomManager {
@@ -33,7 +54,7 @@ export class RoomManager {
   
 
   createRoom(roomName: string) {
-    this.roomMap[roomName] = new Room();
+    this.roomMap[roomName] = new Room(roomName);
   }
 
   getRoom(roomName: string) {
