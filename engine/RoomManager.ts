@@ -6,7 +6,7 @@ import { User } from "./User";
 class Room {
   gameAutomaton: GameAutomaton | null;
   user: string[];
-  // iterateSignal: IterateSignal | null = null;
+  iterateSignal: IterateSignal | null = null;
   constructor() {
     this.user = ["AnonymousID1", "AnonymousID2"];
     this.gameAutomaton = null;
@@ -15,6 +15,8 @@ class Room {
   startGame() {
     return this.gameAutomaton = new GameAutomaton([deckLib["testDeck1"], deckLib["testDeck1"]])
   }
+
+  
 }
 
 export class RoomManager {
