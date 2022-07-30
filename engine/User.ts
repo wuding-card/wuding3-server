@@ -6,14 +6,15 @@ export class User {
   constructor(socket: any) {
     socket.emit("confirm-connect");
     logger.info('User with socket id %s connected!', socket.id);
-    // Register Set User ID Event:
-    // socket.on("set-user-id", (name: string) => {
-    //   logger.info('User ID has been set as %s', name);
-    //   this.userName = name;
-    // });
-    // socket.on("create-room", (args: any) => {
-    //   logger.info('User created room with name: %s.',  args);
-    // })
+    // Register user login event:
+    // Now temporarily login without check.
+    socket.on("user-login", (name: string) => {
+      logger.info('User with socket id %s has logined with name %s', socket.id, name);
+      this.userName = name;
+    });
+    socket.on("create-room", (args: any) => {
+      logger.info('User created room with name: %s.',  args);
+    })
     // socket.on("enter-game", (args) => {
     //   console.log(args)
     //   socket.emit("renew-game-state", {
