@@ -1,5 +1,6 @@
 import { logger } from "../tools/Logger";
-import { Room, RoomManager } from "./RoomManager";
+import { Room } from "./Room";
+import { RoomManager } from "./RoomManager";
 
 export class User {
   socket: any; // The handle got by socket.io.

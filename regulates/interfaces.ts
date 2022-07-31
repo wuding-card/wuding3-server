@@ -4,7 +4,7 @@ import { GameAutomaton } from "../engine/GameAutomaton";
 import { Player } from "../engine/Player"
 import { GameEvent } from "../events/GameEvent";
 import { Limit } from "./limits";
-import { Target } from "./types";
+import { Deck, Target } from "./types";
 
 /* ======== GameProcess And Signal ======== */
 
@@ -162,9 +162,3 @@ export type EventInfo = {
   }
 }
 
-/* ======== RoomState ======== */
-export interface RoomState {
-  iterateSignal: IterateSignal | null;
-  roomName: string;
-  gameAutomaton: GameAutomaton | null;
-}
