@@ -4,20 +4,44 @@ import { Deck } from "../regulates/types";
 import { logger } from "../tools/Logger";
 import { GameAutomaton } from "./GameAutomaton";
 import { User } from "./User";
-
+const defaultDeck1 = "testDeck1";
+const defaultDeck2 = "testDeck2";
 export class Room {
   
   users: (User | null)[] = [null, null];
-  decks: Deck[] = [deckLib["testDeck1"], deckLib["testDeck1"]];
+  decks: ({
+    name: string,
+    deck: Deck,
+  })[];
   iterateSignal: IterateSignal | null = null;
   roomName: string;
   gameAutomaton: GameAutomaton | null = null;
   constructor(name: string) {
     this.roomName = name;
+    this.decks = [
+      {
+        name: defaultDeck1,
+        deck: deckLib[defaultDeck1],
+      },
+      {
+        name: defaultDeck2,
+        deck: deckLib[defaultDeck2],
+      }
+    ]
   }
 
   startGame() {
-    return this.gameAutomaton = new GameAutomaton(this.decks);
+    if(this.users.length < 2 || this.users[0] == null || this.users[1] == null) {
+      logger.warn("Failed to start game in room %s: PLAYER NOT ENOUGH.", this.roomName);
+      return;
+    }
+    if(this.gameAutomaton != null) {
+      logger.warn("Failed to start game in room %s: GAME ALREADY STARTED", this.roomName);
+      return;
+    }
+    logger.info("Start game in room %s successfully with decks: %s.", this.roomName, this.decks);
+    this.gameAutomaton = new GameAutomaton([this.decks[0].deck, this.decks[1].deck]);
+    this.renew();
   }
 
   addUser(user: User) {
@@ -46,18 +70,34 @@ export class Room {
   }
 
   removeUser(user: User) {
-    this.users.filter(i => i?.userName != user.userName);
+    for(const i in this.users) {
+      if(this.users[i]?.userName == user.userName) {
+        logger.verbose('Remove user %s from room %s successfully.', user.userName, this.roomName);
+        this.users[i] = null;
+        return;
+      }
+    }
+    logger.warn("Failed to remove user %s from room %s: NO SUCH USER", user.userName, this.roomName);
   }
 
-  renewRoom() {
+  renew() {
     const roomState = {
       roomName: this.roomName,
       users: this.users.map(i => i?.userName),
       decks: this.decks,
     };
-    for(const i of this.users) {
-      logger.verbose('Room %s renew to user %s', this, i?.userName);
-      i?.emit('renew-room-state', roomState);
+    if(this.gameAutomaton == null) {
+      for(const i of this.users) {
+        logger.verbose('Room %s renew to user %s', this, i?.userName);
+        i?.emit('renew-room-state', roomState);
+      }
+    }else{
+      for(const i of this.users) {
+        logger.verbose('Gamestate %s renew to user %s', this.gameAutomaton, i?.userName);
+        i?.emit('renew-game-state', {
+          state: this.gameAutomaton.gameState
+        });
+      }
     }
   }
 

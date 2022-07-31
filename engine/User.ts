@@ -40,9 +40,8 @@ export class User {
             return;
           }
         }
-        // Todo: 此处应当广播
-        this.room.renewRoom();
-        // Join the room.
+        // Sync the new info to all users in the room.
+        this.room.renew();
       }
   }
   constructor(socket: any) {
@@ -62,7 +61,30 @@ export class User {
     // Register join room event:
     // If room not exist it will create a new one.
     socket.on("join-room", this.joinRoom);
+    socket.on("room-start-game", () => {
+      if(this.userName == null) {
+        logger.warn('User with socket id %s try to start game without login.', socket.id);
+        return;
+      }
+      if(this.room == null) {
+        logger.warn('User %s try to start game but never in any room.', this.userName);
+        return;
+      }
+      this.room.startGame();
+    });
 
+    socket.on("leave-room", () => {
+      if(this.userName == null) {
+        logger.warn('User with socket id %s try leave a room but never login.', socket.id);
+        return;
+      }
+      if(this.room == null) {
+        logger.warn('User %s try to leave a room but never in any room.', this.userName);
+        return;
+      }
+      this.room.removeUser(this);
+      socket.emit("leave-room-successful");
+    });
 
     // socket.on("enter-game", (args) => {
     //   console.log(args)
