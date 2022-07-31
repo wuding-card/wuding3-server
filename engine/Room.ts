@@ -80,6 +80,30 @@ export class Room {
     logger.warn("Failed to remove user %s from room %s: NO SUCH USER", user.userName, this.roomName);
   }
 
+  swapUser() {
+    if(this.users.length < 2){
+      logger.error("Failed to swap users in room %s: USERS LESS THEN 2", this.roomName);
+      return;
+    }
+    logger.verbose("User %s and %s swapped successfully.", this.users[0]?.userName, this.users[1]?.userName);
+    [this.users[0], this.users[1]] = [this.users[1], this.users[0]];
+    this.renew();
+  }
+
+  getGameState(id: number) {
+    // Todo: hide those infomations that are invisible for opponent.
+    if(id == 0) {
+      return this.gameAutomaton?.gameState;
+    }else{
+      if(this.gameAutomaton == null) {
+        return null;
+      }
+      const ret = this.gameAutomaton.gameState;
+      [ret.playerState[0], ret.playerState[1]] = [ret.playerState[1], ret.playerState[0]];
+      return ret;
+    }
+  }
+
   renew() {
     const roomState = {
       roomName: this.roomName,
@@ -92,10 +116,10 @@ export class Room {
         i?.emit('renew-room-state', roomState);
       }
     }else{
-      for(const i of this.users) {
-        logger.verbose('Gamestate %s renew to user %s', this.gameAutomaton, i?.userName);
-        i?.emit('renew-game-state', {
-          state: this.gameAutomaton.gameState
+      for(let i = 0; i < this.users.length; ++i) {
+        logger.verbose('Gamestate %s renew to user %s', this.gameAutomaton, this.users[i]?.userName);
+        this.users[i]?.emit('renew-game-state', {
+          state: this.getGameState(i),
         });
       }
     }

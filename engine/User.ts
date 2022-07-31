@@ -61,6 +61,7 @@ export class User {
     // Register join room event:
     // If room not exist it will create a new one.
     socket.on("join-room", this.joinRoom);
+    // Start the game.
     socket.on("room-start-game", () => {
       if(this.userName == null) {
         logger.warn('User with socket id %s try to start game without login.', socket.id);
@@ -72,7 +73,20 @@ export class User {
       }
       this.room.startGame();
     });
-
+    // Swap user place.
+    socket.on("swap-room-user", () => {
+      logger.verbose("Received swap place request from user with socket id %s", socket.id);
+      if(this.userName == null) {
+        logger.warn('User with socket id %s try sawp users in a room but never login.', socket.id);
+        return;
+      }
+      if(this.room == null) {
+        logger.warn('User %s try to sawp users in a room but never in any room.', this.userName);
+        return;
+      }
+      this.room.swapUser();
+    });
+    // Leave the room.
     socket.on("leave-room", () => {
       if(this.userName == null) {
         logger.warn('User with socket id %s try leave a room but never login.', socket.id);
@@ -86,13 +100,6 @@ export class User {
       socket.emit("leave-room-successful");
     });
 
-    // socket.on("enter-game", (args) => {
-    //   console.log(args)
-    //   socket.emit("renew-game-state", {
-    //     state: gameAutomaton.gameState,
-        
-    //   });
-    // });
   }
 
 }
