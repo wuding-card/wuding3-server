@@ -1,6 +1,7 @@
 import { DiscardState, ErrorSignal, FreeActionState, FreeOperation, GameResult, GameStage, GameState, GameStep, InstantActionState, InstantOperation, IterateSignal, IterateSignalType, PlayerOperation, PlayerSignal, PracticeState } from "../regulates/interfaces.js";
 import { Deck } from "../regulates/types.js";
 import { assert } from "../regulates/utils.js";
+import { logger } from "../tools/Logger.js";
 import { Card } from "./Card.js";
 import { EventStack } from "./EventStack.js";
 import { Player } from "./Player.js";
@@ -29,6 +30,7 @@ export class GameAutomaton {
     this.gameState = {
       playerState: [new Player(0,deck[0]),new Player(1,deck[1])],
       automatonState: {
+        // Now temporarily disable the stage, because it looks useless.
         stage: GameStage.PREPARE,
         step: GameStep.GAME_START,
         /* 0: Alice, 1: Bob */
@@ -47,11 +49,13 @@ export class GameAutomaton {
   // This function is a wrap-up of __iterate().
   // 
   iterate(signal: PlayerSignal): IterateSignal {
+    logger.silly("Game iterate with signal %s, start automaton state: %s", signal, this.gameState.automatonState);
     let ret = this.__iterate(signal);
     const playerState = this.gameState.playerState;
     if(!playerState[0].alive() || !playerState[1].alive()) {
       ret = {type: IterateSignalType.GAME_END,state: (playerState[0].alive() != playerState[1].alive()? playerState[0].alive()? GameResult.AWIN: GameResult.BWIN: GameResult.DRAW)};
     }
+    logger.silly("Game iterate end with %s, end automaton state: %s", ret, this.gameState.automatonState);
     return ret;
   }
   // This function means the automaton step forward.
@@ -67,6 +71,7 @@ export class GameAutomaton {
       };
       case GameStep.UNTAP: {
         playerState[automatonState.turn].untapAll();
+        ++automatonState.step;
         return this.requestGenerator(PlayerOperation.INSTANT_ACTION);
       };
       case GameStep.TURN_START:
@@ -97,7 +102,7 @@ export class GameAutomaton {
             };
           }
         }
-      };
+      }
       case GameStep.PRACTICE: {
         if(signal.type != PlayerOperation.PRACTICE) {
           return ILLEGAL_OPERATION;
@@ -134,9 +139,6 @@ export class GameAutomaton {
               return DEAFULT_ERROR;
             }
           }
-        } else if(signal.type == PlayerOperation.INSTANT_ACTION) {
-          // Todo: Add support of instantAction
-          return FUTURE_FEATURE;
         } else {
           return ILLEGAL_OPERATION;
         }
@@ -153,7 +155,7 @@ export class GameAutomaton {
           automatonState.turn ^= 1;
           automatonState.priority = automatonState.turn;
           return this.requestGenerator(PlayerOperation.NONE);
-        }else {
+        } else {
           return ILLEGAL_OPERATION;
         }
       }

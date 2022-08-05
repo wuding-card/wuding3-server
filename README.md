@@ -16,3 +16,7 @@ Read this before reading the whole project.
 ## editor.md
 
 Regulated some basic standard about how to commit and read log.
+
+## PS
+
+ALWAYS REMEBER TO COMPILE THE TYPESCRIPT FILES!!!

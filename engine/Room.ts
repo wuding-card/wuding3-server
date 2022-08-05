@@ -107,9 +107,17 @@ export class Room {
       logger.error("Failed to get iterate signal in room %s: GAME AUTOMATON NOT RUNNING", this.roomName);
       return null;
     }
-    const nowState = this.gameAutomaton.gameState;
+    let nowState: GameState;
     if(id == 1) {
-      [nowState.playerState[0], nowState.playerState[1]] = [nowState.playerState[1], nowState.playerState[0]];
+      nowState = {
+        playerState: [this.gameAutomaton.gameState.playerState[1], this.gameAutomaton.gameState.playerState[0]],
+        automatonState: this.gameAutomaton.gameState.automatonState,
+      }
+    }else{
+      nowState = {
+        playerState: [this.gameAutomaton.gameState.playerState[0], this.gameAutomaton.gameState.playerState[1]],
+        automatonState: this.gameAutomaton.gameState.automatonState,
+      }
     }
     const nowSignal = this.iterateSignal.state[0] == id? this.iterateSignal.state[1]: PlayerOperation.NONE;
     return {
@@ -131,10 +139,41 @@ export class Room {
       }
     }else{
       for(let i = 0; i < this.users.length; ++i) {
-        logger.verbose('Gamestate %s renew to user %s', this.gameAutomaton, this.users[i]?.userName);
+        logger.verbose('Gamestate %s renew to user %s with id %s', this.gameAutomaton, this.users[i]?.userName, i);
         this.users[i]?.emit('renew-game-state', this.gameStateGenerator(i));
       }
     }
+  }
+
+  iterate(user: User, signal: PlayerSignal) {
+    let userID: number = -1;
+    if(user.userName == this.users[0]?.userName) {
+      userID = 0;
+    }else if(user.userName == this.users[1]?.userName){
+      userID = 1;
+    }
+    if(userID == -1) {
+      logger.error("Player %s sent signal %s while not exist in room %s.", user.userName, signal, this.roomName);
+      return;
+    }else{
+      logger.verbose("Player %s with ID %s sent signal %s to room %s.", user.userName, userID, signal, this.roomName);
+    }
+    if(this.iterateSignal == null || this.iterateSignal.type != IterateSignalType.REQUEST){
+      logger.warn("Player %s with ID %s sent signal. But no iterateSignal requesting in room %s", user.userName, userID, this.roomName);
+      return;
+    }
+    if(this.gameAutomaton == null){
+      logger.warn("Player %s with ID %s sent signal. But there's no game running in room %s", user.userName, userID, this.roomName);
+      return;
+    }
+    if(userID != this.iterateSignal.state[0] || signal.type != this.iterateSignal.state[1]) {
+      logger.verbose("Player %s with ID %s sent signal %s. But not match iterateSignal %s in room %s.", user.userName, userID, signal, this.iterateSignal.state, this.roomName);
+      return;
+    }
+    this.iterateSignal = this.gameAutomaton.iterate(signal);
+    logger.silly("Game iterate and got new iterateSignal %s in room %s", this.iterateSignal, this.roomName);
+    this.renew();
+    return;
   }
 
 }

@@ -16,8 +16,8 @@ export class Player {
   constructor(id: number, deck: Deck) {
     this.basicState = {
       health: 10,
-      mana: id == 0? 0: 1,
-      level: id == 0? 0: 1,
+      mana: id === 0? 0: 1,
+      level: id === 0? 0: 1,
     };
     this.groundState = {
       sorceryState: [],
