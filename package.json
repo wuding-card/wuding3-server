@@ -5,7 +5,8 @@
   "main": "App.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc -p . -w"
+    "dev": "tsc -p . -w",
+    "start": "node ./js/App.js"
   },
   "repository": {
     "type": "git",
