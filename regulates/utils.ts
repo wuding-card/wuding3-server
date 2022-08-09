@@ -1,4 +1,4 @@
-import { DealDamage, GameEvent, MyErrorEvent } from "../events/GameEvent";
+import { AttackOpponent, DealAllDamage, GameEvent, TemplateEvent } from "../events/GameEvent";
 import { CastInfo, CostInfo, EventInfo } from "./interfaces";
 
 export function assert(condition: boolean) {
@@ -31,18 +31,23 @@ export function castAnalyze(castInfo: any): CastInfo {
     ret.castCost.push(cost);
   }
   for(const i in castInfo.resolveEvent.events) {
-
+    const event = eventFactory(castInfo.resolveEvent.events[i]);
+    ret.resolveEvent.events.push(event);
   }
   return ret;
 }
 
 export function eventFactory(eventInfo: EventInfo): GameEvent{
   switch(eventInfo.type) {
-    case "dealDamage": {
-      return new DealDamage(eventInfo.state.amount);
+    case "dealAllDamage": {
+      return new DealAllDamage(eventInfo.state.amount);
+    }
+    case "attackOpponent": {
+      return new AttackOpponent(eventInfo.state.amount);
     }
     default: {
-      return new MyErrorEvent("Event Factory missed type.");
+      // ERROR, NO EVENT MATCHED!!!
+      return new TemplateEvent(null);
     }
   }
 }

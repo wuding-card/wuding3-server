@@ -31,7 +31,7 @@ export class EventStack {
     switch(item.type) {
       case EventItemType.EVENT: {
         const event = item.container as GameEvent;
-        event.resolve(this.gameState,item.targets);
+        event.resolve(item.id, this.gameState,item.targets);
       }
       case EventItemType.IMMEDIATE: {
 

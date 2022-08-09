@@ -3,8 +3,6 @@ import { EventStack } from "../engine/EventStack";
 import { GameAutomaton } from "../engine/GameAutomaton";
 import { Player } from "../engine/Player"
 import { GameEvent } from "../events/GameEvent";
-import { Limit } from "./limits";
-import { Deck, Target } from "./types";
 
 /* ======== GameProcess And Signal ======== */
 
@@ -87,7 +85,7 @@ export type FreeActionState = {
   state: null,
 } | {
   type: FreeOperation.CAST,
-  state: [number,Target[]],
+  state: [number,TargetSets],
 }
 export interface InstantActionState {
   type: InstantOperation,
@@ -141,7 +139,8 @@ export enum EventItemType {
 
 export interface EventItem {
   type: EventItemType,
-  targets: Target[],
+  id: number,
+  targets: TargetSets,
   container: GameEvent | Card,
 }
 
@@ -162,9 +161,34 @@ export interface CastInfo {
 /* ======== EventState ======== */
 
 export type EventInfo = {
-  type: "dealDamage",
+  type: "dealAllDamage",
   state: {
-    amount: number
+    amount: number,
+  }
+} | {
+  type: "attackOpponent",
+  state: {
+    amount: number,
   }
 }
 
+
+/* ======== TargetState ======== */
+export type Target = {
+  type: "cardOnGround",
+  state: {
+    location: [number, string],
+    list: number[],
+  }
+} | {
+  type: "player",
+  state: {
+    list: number[],
+  }
+}
+
+
+// The first var means the player list.
+// The second var means the cards in areas.
+export type TargetSet = Target[];
+export type TargetSets = TargetSet[];

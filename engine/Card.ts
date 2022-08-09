@@ -1,7 +1,7 @@
-import { CastInfo, GameState } from "../regulates/interfaces";
+import { CastInfo, GameState, Target, TargetSet, TargetSets } from "../regulates/interfaces";
 import { cardLib, SectID, TypeID, LevelID } from "../regulates/resources";
-import { Target } from "../regulates/types";
 import { CardUID, castAnalyze } from "../regulates/utils";
+import { logger } from "../tools/Logger";
 import { Player } from "./Player";
 
 export class Card {
@@ -45,14 +45,12 @@ export class Card {
     this.tapped = tap;
   }
 
-  spendCost(player: Player): boolean {
+  checkCost(player: Player): boolean {
     for(const i of this.cast.castCost) {
       switch(i.type) {
         case "mana": {
           if(! (player.basicState.mana >= i.value)) {
             return false;
-          } else {
-            player.basicState.mana -= i.value;
           }
           break;
         }
@@ -64,9 +62,24 @@ export class Card {
     return true;
   }
 
-  resolve(gameState: GameState, targets: Target[]) {
+  spendCost(player: Player) {
+    for(const i of this.cast.castCost) {
+      switch(i.type) {
+        case "mana": {
+          player.basicState.mana -= i.value
+          break;
+        }
+        default: {
+          return;
+        }
+      }
+    }
+  }
+
+  resolve(owner: number, gameState: GameState, targets: TargetSets) {
     for(const i of this.cast.resolveEvent.events) {
-      i.resolve(gameState, targets);
+      logger.silly("Card event happened by %s target on: %s", owner, targets);
+      i.resolve(owner, gameState, targets);
     }
   }
 }

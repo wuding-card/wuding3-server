@@ -40,7 +40,7 @@ const config = {
 
 winston.addColors(config.colors);
 
-export const logger = winston.createLogger({
+const GLOBAL_LOGGER_SETTING = {
   levels: config.levels,
   level: 'silly',
   format: format.combine(
@@ -57,4 +57,6 @@ export const logger = winston.createLogger({
     new winston.transports.Console(),
     new winston.transports.File({ filename: "./logs/server.log" }),
   ],
-});
+};
+
+export const logger = winston.createLogger(GLOBAL_LOGGER_SETTING);

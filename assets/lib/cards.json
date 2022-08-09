@@ -18,7 +18,8 @@
 			"resolveEvent": {
 				"events": [
 					{
-						"dealDamage": {
+						"type": "attackOpponent",
+						"state": {
 							"amount": 3
 						}
 					}

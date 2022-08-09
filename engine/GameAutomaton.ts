@@ -132,7 +132,8 @@ export class GameAutomaton {
             case FreeOperation.CAST: {
               // Todo: Actions should enter stack.
               // Todo: Refactor this.
-              playerState[automatonState.turn].cast(state.state[0],state.state[1],this.gameState);
+              logger.silly("Cast %s",state.state);
+              playerState[automatonState.turn].cast(automatonState.priority, state.state[0],state.state[1],this.gameState);
               return this.requestGenerator(PlayerOperation.FREE_ACTION);
             }
             default: {

@@ -1,6 +1,7 @@
-import { DiscardState, GameState } from "../regulates/interfaces";
-import { Deck, Target } from "../regulates/types";
+import { DiscardState, GameState, TargetSets } from "../regulates/interfaces";
+import { Deck } from "../regulates/types";
 import { assert } from "../regulates/utils";
+import { logger } from "../tools/Logger";
 import { Card } from "./Card"
 
 export class Player {
@@ -45,7 +46,19 @@ export class Player {
     this.groundState.handState.sort((a,b) => (Math.random()-0.5));
   }
 
+  moveCard(from: string, to: string, id: number) {
+    for(let i = 0; i < this.groundState[from].length; ++i) {
+      if(this.groundState[from][i].UID === id) {
+        const card = this.groundState[from].splice(i);
+        if(card != undefined) {
+          this.groundState[to].push(card[0]);
+        }
+      }
+    }
+  }
+
   hurt(val: number = 1) {
+    logger.silly("Player hurt %s.", val);
     this.basicState.health -= val;
   }
 
@@ -68,6 +81,9 @@ export class Player {
 
   levelChange(times: number = 1) {
     this.basicState.level += times;
+    if(this.basicState.level > 10) {
+      this.basicState.level = 10;
+    }
   }
 
   practice(choice: number) {
@@ -120,11 +136,20 @@ export class Player {
     return ret;
   }
 
-  cast(id: number, targets: Target[],gameState: GameState) {
+  cast(owner: number, id: number, targets: TargetSets,gameState: GameState) {
     const cards = this.search([id], ["handState"]);
     const card = cards[0];
-    if(card.spendCost(this)){
-      card.resolve(gameState, targets);
+    if(card != undefined) {
+      if(card.checkCost(this)){
+        card.spendCost(this);
+        card.resolve(owner, gameState, targets);
+        this.moveCard("handState", "graveyardState", card.UID);
+      } else {
+        // Todo: Deal with those that cannot cast.
+      }
+    }else{
+      
     }
+    
   }
 }
