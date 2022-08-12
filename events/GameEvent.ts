@@ -71,6 +71,46 @@ export class AttackOpponent extends GameEvent {
   }
 }
 
+export class ConsultPaper extends GameEvent{
+  tiggerEvent: GameEvent;
+  constructor(tiggerEvent: GameEvent) {
+    super();
+    this.tiggerEvent = tiggerEvent;
+  }
+  protected __checkTargets(gameState: GameState, targets: TargetSets): boolean {
+    if(targets.length > 0) {
+      logger.silly("Attack Opponent Failed: illegal targets.");
+      return false;
+    }
+    return true;
+  }
+  protected __resolve(id: number, gameState: GameState, targets: TargetSets): void {
+    const cards = gameState.playerState[id].draw();
+    gameState.playerState[id].reveal(cards.map((card) => card.UID));
+    if(cards.length > 0 && cards[0].typeID == 1) {
+      this.tiggerEvent.resolve(id, gameState, targets);
+    }
+  }
+}
+
+export class DrawCard extends GameEvent{
+  amount: number;
+  constructor(amount: number) {
+    super();
+    this.amount = amount;
+  }
+  protected __checkTargets(gameState: GameState, targets: TargetSets): boolean {
+    if(targets.length > 0) {
+      logger.silly("Attack Opponent Failed: illegal targets.");
+      return false;
+    }
+    return true;
+  }
+  protected __resolve(id: number, gameState: GameState, targets: TargetSets): void {
+    gameState.playerState[id].draw(this.amount);
+  }
+}
+
 // This event is useless but for copy and create new event.
 export class TemplateEvent extends GameEvent {
   attr: any;

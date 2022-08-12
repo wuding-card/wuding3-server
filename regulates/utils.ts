@@ -1,4 +1,4 @@
-import { AttackOpponent, DealAllDamage, GameEvent, TemplateEvent } from "../events/GameEvent";
+import { AttackOpponent, ConsultPaper, DealAllDamage, DrawCard, GameEvent, TemplateEvent } from "../events/GameEvent";
 import { CastInfo, CostInfo, EventInfo } from "./interfaces";
 
 export function assert(condition: boolean) {
@@ -44,6 +44,12 @@ export function eventFactory(eventInfo: EventInfo): GameEvent{
     }
     case "attackOpponent": {
       return new AttackOpponent(eventInfo.state.amount);
+    }
+    case "drawCard": {
+      return new DrawCard(eventInfo.state.amount);
+    }
+    case "consultPaper": {
+      return new ConsultPaper(eventFactory(eventInfo.state.tiggerEvent));
     }
     default: {
       // ERROR, NO EVENT MATCHED!!!

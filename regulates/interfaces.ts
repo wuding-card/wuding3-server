@@ -170,6 +170,16 @@ export type EventInfo = {
   state: {
     amount: number,
   }
+} | {
+  type: "drawCard",
+  state: {
+    amount: number,
+  }
+} | {
+  type: "consultPaper",
+  state: {
+    tiggerEvent: EventInfo
+  }
 }
 
 

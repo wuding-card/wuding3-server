@@ -25,7 +25,39 @@
 					}
 				]
 			}
-			
+		}
+	},
+	"查阅文献": {
+		"rarity": "2",
+		"type": "即时",
+		"sect": "通用",
+		"level": "炼虚",
+		"attribute": {
+			"castCost":"3",
+			"maintainCost": "",
+			"power": "",
+			"defense": "",
+			"durability": ""
+		},
+		"cast": {
+			"castCost": {
+				"mana": 3
+			},
+			"resolveEvent": {
+				"events": [
+					{
+						"type": "consultPaper",
+						"state": {
+							"tiggerEvent": {
+								"type": "drawCard",
+								"state": {
+									"amount": 1
+								}
+							}
+						}
+					}
+				]
+			}
 		}
 	}
 }

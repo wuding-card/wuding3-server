@@ -42,17 +42,20 @@ export class Player {
   }
 
 
-  shuffleLibrary() {
-    this.groundState.handState.sort((a,b) => (Math.random()-0.5));
+  shuffleLibrary(lib: string = "libraryState") {
+    this.groundState[lib].sort((a,b) => (Math.random()-0.5));
   }
 
   moveCard(from: string, to: string, id: number) {
     for(let i = 0; i < this.groundState[from].length; ++i) {
       if(this.groundState[from][i].UID === id) {
-        const card = this.groundState[from].splice(i);
+        
+        // const card = this.groundState[from].splice(i);
+        const card = this.groundState[from].splice(i, 1);
         if(card != undefined) {
           this.groundState[to].push(card[0]);
         }
+        return;
       }
     }
   }
@@ -66,14 +69,30 @@ export class Player {
     this.hurt();
   }
 
-  draw(times: number = 1, top: boolean = true) {
+  draw(times: number = 1, top: boolean = true): Card[] {
+    const cards: Card[] = [];
     for(let i = 0; i < times; ++i) {
       if(this.groundState.libraryState.length == 0) {
         this.exhaust();
       }else{
-        const nowCard = top?this.groundState.libraryState.pop():this.groundState.libraryState.shift();
-        if(nowCard !== undefined) {
-          this.groundState.handState.push(nowCard);
+        const card = top?this.groundState.libraryState.pop():this.groundState.libraryState.shift();
+        if(card != undefined) {
+          cards.push(card);
+        }
+      }
+    }
+    logger.silly("Player draw cards %s times",cards.length);
+    if(cards.length > 0) {
+      this.groundState.handState.push(...cards);
+    }
+    return cards;
+  }
+
+  reveal(UIDs: number[]) {
+    for(const UID of UIDs) {
+      for(const i of this.groundState.handState) {
+        if(i.UID === UID) {
+          i.turnFace(true);
         }
       }
     }
@@ -136,7 +155,7 @@ export class Player {
     return ret;
   }
 
-  cast(owner: number, id: number, targets: TargetSets,gameState: GameState) {
+  cast(owner: number, id: number, targets: TargetSets, gameState: GameState) {
     const cards = this.search([id], ["handState"]);
     const card = cards[0];
     if(card != undefined) {
