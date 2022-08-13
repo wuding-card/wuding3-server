@@ -11,7 +11,6 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-const gameAutomaton = new GameAutomaton([deckLib["testDeck1"], deckLib["testDeck1"]]);
 const users: User[] = [];
 // Active when player connected.
 io.on("connection", (socket) => {
