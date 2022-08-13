@@ -137,6 +137,11 @@ export class Room {
         logger.verbose('Room %s renew to user %s', this, i?.userName);
         i?.emit('renew-room-state', roomState);
       }
+    }else if(this.iterateSignal?.type === IterateSignalType.GAME_END){
+      for(let i = 0; i < this.users.length; ++i) {
+        logger.verbose('Game Result %s renew to user %s with id %s', this.iterateSignal.state, this.users[i]?.userName, i);
+        this.users[i]?.emit('room-game-end', this.iterateSignal.state);
+      }
     }else{
       for(let i = 0; i < this.users.length; ++i) {
         logger.verbose('Gamestate %s renew to user %s with id %s', this.gameAutomaton, this.users[i]?.userName, i);
