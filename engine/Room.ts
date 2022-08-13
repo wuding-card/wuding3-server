@@ -41,7 +41,7 @@ export class Room {
       logger.warn("Failed to start game in room %s: PLAYER NOT ENOUGH.", this.roomName);
       return;
     }
-    if(this.gameAutomaton != null) {
+    if(this.gameAutomaton != null && this.iterateSignal?.type !== IterateSignalType.GAME_END) {
       logger.warn("Failed to start game in room %s: GAME ALREADY STARTED", this.roomName);
       return;
     }
@@ -140,7 +140,10 @@ export class Room {
     }else if(this.iterateSignal?.type === IterateSignalType.GAME_END){
       for(let i = 0; i < this.users.length; ++i) {
         logger.verbose('Game Result %s renew to user %s with id %s', this.iterateSignal.state, this.users[i]?.userName, i);
-        this.users[i]?.emit('room-game-end', this.iterateSignal.state);
+        this.users[i]?.emit('room-game-end', {
+          gameResult: this.iterateSignal.state,
+          roomState: roomState,
+        });
       }
     }else{
       for(let i = 0; i < this.users.length; ++i) {
