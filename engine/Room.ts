@@ -4,8 +4,8 @@ import { Deck } from "../regulates/types";
 import { logger } from "../tools/Logger";
 import { GameAutomaton } from "./GameAutomaton";
 import { User } from "./User";
-const defaultDeck1 = "testDeck1";
-const defaultDeck2 = "testDeck2";
+const defaultDeck1 = "swordAndFist";
+const defaultDeck2 = "cardNotEnough";
 
 const PLAYER_NO_ACTION: PlayerSignal = {
   type: PlayerOperation.NONE,

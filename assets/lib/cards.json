@@ -27,6 +27,62 @@
 			}
 		}
 	},
+	"基础剑法": {
+		"rarity": "1",
+		"type": "即时",
+		"sect": "通用",
+		"level": "金丹",
+		"attribute": {
+			"castCost": "4",
+			"maintainCost": "",
+			"power": "",
+			"defense": "",
+			"durability": ""
+		},
+		"cast": {
+			"castCost": {
+				"mana": 4
+			},
+			"resolveEvent": {
+				"events": [
+					{
+						"type": "attackOpponent",
+						"state": {
+							"amount": 4
+						}
+					}
+				]
+			}
+		}
+	},
+	"接受教育": {
+		"rarity": "1",
+		"type": "即时",
+		"sect": "通用",
+		"level": "练气",
+		"attribute": {
+			"castCost": "2",
+			"maintainCost": "",
+			"power": "",
+			"defense": "",
+			"durability": ""
+		},
+		"cast": {
+			"castCost": {
+				"mana": 3
+			},
+			"resolveEvent": {
+				"events": [
+					{
+						"type": "drawCard",
+						"state": {
+							"amount": 1
+						}
+					}
+				]
+			}
+		}
+	},
 	"查阅文献": {
 		"rarity": "2",
 		"type": "即时",
@@ -58,6 +114,37 @@
 					}
 				]
 			}
+		}
+	},
+	"剑七十二": {
+		"attribute": {
+			"castCost": "1",
+			"maintainCost": "",
+			"power": "",
+			"defense": "",
+			"durability": ""
+		},
+		"rarity": "4",
+		"type": "即时",
+		"sect": "通用",
+		"level": "练气",
+		"cast": {
+			"castCost": {
+				"mana": 1
+			},
+			"resolveEvent": {
+				"events": [
+					{
+						"type": "attackOpponent",
+						"state": {
+							"amount": 1
+						}
+					}
+				]
+			}
+		},
+		"staticEffect": {
+			"resolveEnd": "libraryState"
 		}
 	}
 }
