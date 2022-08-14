@@ -31,11 +31,12 @@ export const TypeID: Record<string,number> = {
 
 export const LevelID: Record<string,number> = {
   "凡人": 0,
-  "炼气": 1,
-  "筑基": 2,
-  "金丹": 3,
-  "元神": 4,
-  "炼虚": 5,
-  "涅槃": 6,
-  "逍遥": 7,
+  "通天": 1,
+  "练气": 2,
+  "筑基": 3,
+  "金丹": 4,
+  "元神": 5,
+  "炼虚": 6,
+  "涅槃": 7,
+  "逍遥": 8,
 }

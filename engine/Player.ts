@@ -17,8 +17,8 @@ export class Player {
   constructor(id: number, deck: Deck) {
     this.basicState = {
       health: 10,
-      mana: id === 0? 0: 1,
-      level: id === 0? 0: 1,
+      mana: id === 0? 1: 2,
+      level: id === 0? 1: 2,
     };
     this.groundState = {
       sorceryState: [],
@@ -46,7 +46,7 @@ export class Player {
     this.groundState[lib].sort((a,b) => (Math.random()-0.5));
   }
 
-  moveCard(from: string, to: string, id: number) {
+  moveCard(from: string, to: string, id: number, shuffle: boolean = false) {
     for(let i = 0; i < this.groundState[from].length; ++i) {
       if(this.groundState[from][i].UID === id) {
         
@@ -54,6 +54,9 @@ export class Player {
         const card = this.groundState[from].splice(i, 1);
         if(card != undefined) {
           this.groundState[to].push(card[0]);
+          if(shuffle) {
+            this.shuffleLibrary(to);
+          }
         }
         return;
       }
@@ -159,10 +162,9 @@ export class Player {
     const cards = this.search([id], ["handState"]);
     const card = cards[0];
     if(card != undefined) {
-      if(card.checkCost(this)){
+      if(card.checkCost(this) && card.checkLevel(this)){
         card.spendCost(this);
         card.resolve(owner, gameState, targets);
-        this.moveCard("handState", "graveyardState", card.UID);
       } else {
         // Todo: Deal with those that cannot cast.
       }

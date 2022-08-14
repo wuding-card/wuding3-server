@@ -20,7 +20,7 @@
 					{
 						"type": "attackOpponent",
 						"state": {
-							"amount": 3
+							"amount": 2
 						}
 					}
 				]
@@ -33,7 +33,7 @@
 		"sect": "通用",
 		"level": "金丹",
 		"attribute": {
-			"castCost": "4",
+			"castCost": "3",
 			"maintainCost": "",
 			"power": "",
 			"defense": "",
@@ -41,14 +41,14 @@
 		},
 		"cast": {
 			"castCost": {
-				"mana": 4
+				"mana": 3
 			},
 			"resolveEvent": {
 				"events": [
 					{
 						"type": "attackOpponent",
 						"state": {
-							"amount": 4
+							"amount": 3
 						}
 					}
 				]
@@ -61,7 +61,7 @@
 		"sect": "通用",
 		"level": "练气",
 		"attribute": {
-			"castCost": "2",
+			"castCost": "3",
 			"maintainCost": "",
 			"power": "",
 			"defense": "",
@@ -76,7 +76,7 @@
 					{
 						"type": "drawCard",
 						"state": {
-							"amount": 1
+							"amount": 2
 						}
 					}
 				]
@@ -89,7 +89,7 @@
 		"sect": "通用",
 		"level": "炼虚",
 		"attribute": {
-			"castCost":"3",
+			"castCost":"2",
 			"maintainCost": "",
 			"power": "",
 			"defense": "",
@@ -97,7 +97,7 @@
 		},
 		"cast": {
 			"castCost": {
-				"mana": 3
+				"mana": 2
 			},
 			"resolveEvent": {
 				"events": [
@@ -144,7 +144,10 @@
 			}
 		},
 		"staticEffect": {
-			"resolveEnd": "libraryState"
+			"resolveEndPlace": {
+				"place": "libraryState",
+				"shuffle": true
+			}
 		}
 	}
 }

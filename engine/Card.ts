@@ -16,6 +16,13 @@ export class Card {
   rarity: number;
   UID: number;
   cast: CastInfo;
+
+  staticEffect: {
+    resolveEndPlace: {
+      place: string,
+      shuffle: boolean,
+    }
+  }
   
   constructor(name: string) {
     const card = cardLib[name];
@@ -35,6 +42,15 @@ export class Card {
       }
     }
     this.cast = castAnalyze(card.cast);
+    this.staticEffect = {
+      resolveEndPlace: {
+        place: "graveyardState",
+        shuffle: false,
+      }
+    }
+    if(card?.staticEffect?.resolveEndPlace != null){
+      this.staticEffect.resolveEndPlace = card.staticEffect.resolveEndPlace
+    };
   }
 
   turnFace(face: boolean) {
@@ -43,6 +59,10 @@ export class Card {
 
   turnTap(tap: boolean) {
     this.tapped = tap;
+  }
+
+  checkLevel(player: Player): boolean {
+    return this.level <= player.basicState.level;
   }
 
   checkCost(player: Player): boolean {
@@ -81,5 +101,6 @@ export class Card {
       logger.silly("Card event happened by %s target on: %s", owner, targets);
       i.resolve(owner, gameState, targets);
     }
+    gameState.playerState[owner].moveCard("handState", this.staticEffect.resolveEndPlace.place, this.UID, this.staticEffect.resolveEndPlace.shuffle);
   }
 }
