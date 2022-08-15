@@ -164,6 +164,7 @@ export class Player {
     if(card != undefined) {
       if(card.checkCost(this) && card.checkLevel(this)){
         card.spendCost(this);
+        card.turnFace(true);
         card.resolve(owner, gameState, targets);
       } else {
         // Todo: Deal with those that cannot cast.

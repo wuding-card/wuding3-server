@@ -19,7 +19,7 @@ export const CardUID = new CardUIDManager();
 export function castAnalyze(card: any): CastInfo {
   const castInfo  = card.cast;
   let resolveEndPlaceName = "graveyardState";
-  switch(card.typeID) {
+  switch(card.type) {
     case "攻击":
     case "防御":
     case "法器": {
@@ -45,16 +45,23 @@ export function castAnalyze(card: any): CastInfo {
       shuffle: false,
     }
   }
-  for(const i in castInfo.castCost) {
-    const cost = {
-      type: i,
-      value: castInfo.castCost[i]
-    } as CostInfo;
-    ret.castCost.push(cost);
+  if(castInfo == undefined) {
+    return ret;
   }
-  for(const i in castInfo.resolveEvent.events) {
-    const event = eventFactory(castInfo.resolveEvent.events[i]);
-    ret.resolveEvent.events.push(event);
+  if(castInfo.castCost != undefined) {
+    for(const i in castInfo.castCost) {
+      const cost = {
+        type: i,
+        value: castInfo.castCost[i]
+      } as CostInfo;
+      ret.castCost.push(cost);
+    }
+  }
+  if(castInfo.resolveEvent != undefined) {
+    for(const i in castInfo.resolveEvent.events) {
+      const event = eventFactory(castInfo.resolveEvent.events[i]);
+      ret.resolveEvent.events.push(event);
+    }
   }
   if(castInfo.resolveEndPlace != null) {
     ret.resolveEndPlace = castInfo.resolveEndPlace;

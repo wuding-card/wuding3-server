@@ -87,7 +87,7 @@
 		"rarity": "2",
 		"type": "即时",
 		"sect": "通用",
-		"level": "炼虚",
+		"level": "筑基",
 		"attribute": {
 			"castCost":"2",
 			"maintainCost": "",
@@ -147,6 +147,31 @@
 				"shuffle": true
 			}
 		}
-			
+	},
+	"制式法衣": {
+		"attribute": {
+			"castCost": "",
+			"maintainCost": "",
+			"power": "",
+			"defense": "1",
+			"durability": "2"
+		},
+		"rarity": "1",
+		"type": "法器",
+		"sect": "通用",
+		"level": "练气"
+	},
+	"制式长剑": {
+		"attribute": {
+			"castCost": "",
+			"maintainCost": "",
+			"power": "1",
+			"defense": "",
+			"durability": "2"
+		},
+		"rarity": "1",
+		"type": "法器",
+		"sect": "通用",
+		"level": "练气"
 	}
 }
