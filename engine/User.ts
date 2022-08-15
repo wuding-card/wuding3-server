@@ -14,6 +14,7 @@ export class User {
       const roomManager = RoomManager.getInstance();
       const socket = this.socket;
       if(this.userName == null) {
+        socket.emit("alert-message", "请先登录");
         logger.warn('User with socket id %s tried to create room with name %s without login.', socket.id, name);
         return;
       }else{
@@ -65,10 +66,12 @@ export class User {
     // Start the game.
     socket.on("room-start-game", () => {
       if(this.userName == null) {
+        socket.emit("alert-message", "请先登录");
         logger.warn('User with socket id %s try to start game without login.', socket.id);
         return;
       }
       if(this.room == null) {
+        socket.emit("alert-message", "请先进入房间");
         logger.warn('User %s try to start game but never in any room.', this.userName);
         return;
       }

@@ -16,11 +16,33 @@ class CardUIDManager {
 
 export const CardUID = new CardUIDManager();
 
-export function castAnalyze(castInfo: any): CastInfo {
+export function castAnalyze(card: any): CastInfo {
+  const castInfo  = card.cast;
+  let resolveEndPlaceName = "graveyardState";
+  switch(card.typeID) {
+    case "攻击":
+    case "防御":
+    case "法器": {
+      resolveEndPlaceName = "equipmentState";
+      break;
+    }
+    case "法阵": {
+      resolveEndPlaceName = "zisurruState";
+      break;
+    }
+    default: {
+      resolveEndPlaceName = "graveyardState";
+      break;
+    }
+  }
   const ret: CastInfo = {
     castCost: [],
     resolveEvent: {
       events: [],
+    },
+    resolveEndPlace: {
+      place: resolveEndPlaceName,
+      shuffle: false,
     }
   }
   for(const i in castInfo.castCost) {
@@ -33,6 +55,9 @@ export function castAnalyze(castInfo: any): CastInfo {
   for(const i in castInfo.resolveEvent.events) {
     const event = eventFactory(castInfo.resolveEvent.events[i]);
     ret.resolveEvent.events.push(event);
+  }
+  if(castInfo.resolveEndPlace != null) {
+    ret.resolveEndPlace = castInfo.resolveEndPlace;
   }
   return ret;
 }

@@ -155,6 +155,10 @@ export interface CastInfo {
   castCost: CostInfo[],
   resolveEvent: {
     events: GameEvent[],
+  },
+  resolveEndPlace: {
+    place: string,
+    shuffle: boolean,
   }
 }
 

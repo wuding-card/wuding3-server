@@ -141,13 +141,12 @@
 						}
 					}
 				]
-			}
-		},
-		"staticEffect": {
+			},
 			"resolveEndPlace": {
 				"place": "libraryState",
 				"shuffle": true
 			}
 		}
+			
 	}
 }
