@@ -15,25 +15,13 @@ const PLAYER_NO_ACTION: PlayerSignal = {
 export class Room {
   
   users: (User | null)[] = [null, null];
-  decks: ({
-    name: string,
-    deck: Deck,
-  })[];
+  decks: Deck[];
   iterateSignal: IterateSignal | null = null;
   roomName: string;
   gameAutomaton: GameAutomaton | null = null;
   constructor(name: string) {
     this.roomName = name;
-    this.decks = [
-      {
-        name: defaultDeck1,
-        deck: deckLib[defaultDeck1],
-      },
-      {
-        name: defaultDeck2,
-        deck: deckLib[defaultDeck2],
-      }
-    ]
+    this.decks = [deckLib[defaultDeck1],deckLib[defaultDeck2]];
   }
 
   startGame() {
@@ -46,7 +34,7 @@ export class Room {
       return;
     }
     logger.info("Start game in room %s successfully with decks: %s.", this.roomName, this.decks);
-    this.gameAutomaton = new GameAutomaton([this.decks[0].deck, this.decks[1].deck]);
+    this.gameAutomaton = new GameAutomaton([this.decks[0], this.decks[1]]);
     this.iterateSignal = this.gameAutomaton.iterate(PLAYER_NO_ACTION);
     this.renew();
   }

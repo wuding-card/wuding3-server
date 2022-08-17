@@ -32,9 +32,9 @@ export class Player {
     this.actionState = {
       drawPerPractice: 2,
     }
-    for(const i in deck) {
+    for(const i of deck.cardList) {
       this.groundState.libraryState.push(
-        new Card(deck[i])
+        new Card(i)
       );
     }
     this.shuffleLibrary();
@@ -114,7 +114,7 @@ export class Player {
 
   /* true means live while false means dead */
   alive() {
-    return this.basicState.health >= 0;
+    return this.basicState.health > 0;
   }
 
   manaRestore() {

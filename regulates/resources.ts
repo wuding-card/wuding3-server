@@ -4,7 +4,20 @@ import { Deck } from './types';
 
 export const cardLib: Record<string,any> = cardJSON;
 
-export const deckLib: Record<string,Deck> = deckJSON;
+export const deckList: Deck[] = deckJSON;
+
+function deckList2deckLib(list: Deck[]): Record<string, Deck> {
+  const ret: Record<string, Deck> = {};
+  deckList.forEach((val) => {ret[val.name] = val});
+  return ret;
+}
+
+export const deckLib: Record<string, Deck> = deckList2deckLib(deckList);
+
+export function getDeckList(interval: number[] = [0, 10]): Deck[] {
+  const ret: Deck[] = deckList.slice(interval[0], interval[1]);
+  return ret;
+}
 
 export const SectID: Record<string,number> = {
   "通用": 0,

@@ -1,4 +1,5 @@
 import { PlayerSignal } from "../regulates/interfaces";
+import { getDeckList } from "../regulates/resources";
 import { logger } from "../tools/Logger";
 import { Room } from "./Room";
 import { RoomManager } from "./RoomManager";
@@ -115,5 +116,8 @@ export class User {
       }
       this.room.iterate(this, val);
     });
+    socket.on("get-deck-list", (interval: number[] = [0, 10]) => {
+      socket.emit("show-deck-list", getDeckList(interval));
+    })
   }
 }
