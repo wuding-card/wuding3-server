@@ -60,9 +60,13 @@
 命火: health
 灵力: mana
 修为: level 
-法术: sorcery
-法器: equipment
-法阵: zisurru
+门派：sect
+类别：type
+  - 法术: sorcery
+  - 法器: equipment
+  - 法阵: zisurru
+  - 心法：hrdayasutra
+
 优先权: priority
 先手玩家: Alice
 后手玩家: Bob
