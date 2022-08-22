@@ -86,6 +86,8 @@ export class GameAutomaton {
             case InstantOperation.PASS: {
               if(automatonState.priority != automatonState.turn) {
                 automatonState.priority^=1;
+
+
                 if(this.stack.empty()) {
                   ++automatonState.step;
                   return this.requestGenerator(expectedOperation[automatonState.step]);
@@ -170,3 +172,4 @@ export class GameAutomaton {
     this.gameState.playerState[this.gameState.automatonState.turn].practice(choice);
   }
 }
+

@@ -22,7 +22,7 @@
 行动阶段: action stage
   行动开始步骤: actionStart step (I)
   自由行动步骤: freeAction step (F)
-结束阶段
+结束阶段：
   回合结束步骤: turnEnd step (I)
   弃牌步骤: discard step (D)
 游戏结束步骤: gameEnd step
